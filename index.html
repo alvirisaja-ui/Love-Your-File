@@ -22,7 +22,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* NAVBAR */
     header {
       padding: 1rem 5%;
       background: #ffffff;
@@ -92,7 +91,6 @@
 
     .btn-premium-nav:hover { background: #333333; }
 
-    /* HERO SECTION */
     .hero {
       text-align: center;
       padding: 3rem 1rem 2rem 1rem;
@@ -186,7 +184,6 @@
       line-height: 1.5;
     }
 
-    /* WORKSPACE */
     .workspace {
       display: none;
       background: #ffffff;
@@ -296,7 +293,6 @@
     .progress-bar-bg { width: 100%; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
     .progress-bar-fill { height: 100%; width: 0%; background: #000000; transition: width 0.2s ease; }
 
-    /* MODAL POPUP */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -376,7 +372,6 @@
       font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
     }
 
-    /* EASTER EGG STYLES */
     .easter-egg-box {
       background: #111111;
       color: #ffffff;
@@ -406,7 +401,6 @@
 </head>
 <body>
 
-  <!-- NAVBAR -->
   <header>
     <a class="brand" id="brandLogo" onclick="handleLogoClick()">LoveYour<span>File</span></a>
     <div class="nav-links">
@@ -418,7 +412,6 @@
     </div>
   </header>
 
-  <!-- HERO BANNER -->
   <div class="hero" id="heroSection">
     <h1>Semua Alat Pengelola File di Satu Tempat</h1>
     <p>Kompresi & konversi dokumen atau media secara instan. 100% cepat dan tanpa ribet.</p>
@@ -430,7 +423,6 @@
     </div>
   </div>
 
-  <!-- MAIN CONTAINER -->
   <main>
     <div class="tools-grid" id="toolsGrid">
       <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
@@ -450,14 +442,12 @@
       </div>
     </div>
 
-    <!-- WORKSPACE -->
     <div class="workspace" id="workspaceArea">
       <div class="workspace-header">
         <button class="btn-back" onclick="navigateTo('/')">← Kembali ke Home</button>
         <h2 id="workspaceTitle" style="font-size: 1.15rem; font-weight: 800;">Judul Alat</h2>
       </div>
 
-      <!-- TOOL: KOMPRES -->
       <div id="compressTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="compressError"></div>
         <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
@@ -475,7 +465,6 @@
         <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
       </div>
 
-      <!-- TOOL: CONVERT -->
       <div id="convertTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="convertError"></div>
         <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
@@ -529,12 +518,10 @@
     </div>
   </main>
 
-  <!-- MODAL LANGGANAN / PRICING -->
   <div class="modal-overlay" id="subscriptionModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
       
-      <!-- STEP 1: PILIH PAKET -->
       <div id="modalSelectStep">
         <h2 class="modal-title">Pilih Paket Langganan</h2>
         <p class="modal-subtitle">Tingkatkan batas pemakaian harian untuk akses lebih cepat dan luas.</p>
@@ -569,7 +556,6 @@
         </div>
       </div>
 
-      <!-- STEP 2: INPUT SANDI -->
       <div id="modalPasswordStep" class="password-view">
         <h2 class="modal-title" id="passViewTitle">Verifikasi Paket</h2>
         <p class="modal-subtitle">Masukkan kata sandi untuk mengaktifkan paket ini.</p>
@@ -585,7 +571,6 @@
         <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
       </div>
 
-      <!-- STEP 3: HASIL SUKSES -->
       <div id="modalSuccessStep" class="success-view">
         <div class="green-check-icon">✓</div>
         <h2 class="modal-title" style="margin-bottom: 0.5rem;">Berhasil Ditambahkan!</h2>
@@ -598,7 +583,6 @@
     </div>
   </div>
 
-  <!-- MODAL EASTER EGG (SECRET UNLOCKED) -->
   <div class="modal-overlay" id="easterEggModal">
     <div class="modal-card" style="max-width: 480px; text-align: center;">
       <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -616,7 +600,6 @@
     </div>
   </div>
 
-  <!-- MODAL ERROR / BLOCKED UNTUK ORANG LAIN -->
   <div class="modal-overlay" id="accessDeniedModal">
     <div class="modal-card" style="max-width: 420px; text-align: center;">
       <button class="modal-close" onclick="closeModal()">&times;</button>
@@ -638,46 +621,44 @@
     let currentTargetPlan = null;
 
     // ==========================================
-    // ANTI-SHARE & DEVICE LOCK SYSTEM
+    // FIXED LOGIC: ANTI-SHARE & DEVICE LOCK
     // ==========================================
-    // Kunci Rahasia Pemilik (Hanya Kamu yang Tahu Cara Mengaktifkannya)
     const MASTER_OWNER_KEY = "LYF_SECRET_OWNER_PERMITTED_9921";
 
-    // Cek apakah HP/Browser ini adalah milik Kamu
     function isOwnerDevice() {
       return localStorage.getItem('lyf_owner_device') === MASTER_OWNER_KEY;
     }
 
-    // CARA AKTIFKAN DI HP KAMU:
-    // Klik logo 10 kali cepat (atau tekan lama jika kamu tentukan) untuk daftarkan HP kamu sebagai Pemilik Asli.
-    let logoClickCount = 0;
-    let logoClickTimer = null;
+    let clickCounter = 0;
+    let clickTimer = null;
 
     function handleLogoClick() {
-      logoClickCount++;
-      clearTimeout(logoClickTimer);
-      logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2500);
+      clickCounter++;
+      
+      // Timer diperpanjang jadi 4 detik supaya santai ketuknya
+      clearTimeout(clickTimer);
+      clickTimer = setTimeout(() => {
+        clickCounter = 0;
+      }, 4000);
 
-      // JIKA DIKLIK 10 KALI = AKTIFKAN PERANGKAT SEBAGAI PEMILIK (Hanya Kamu yang Tahu)
-      if (logoClickCount === 10) {
+      // JIKA DIKLIK SANGAT BANYAK (10 KALI ATAU LEBIH) = AKTIVASI PERANGKAT KAMU
+      if (clickCounter >= 10) {
         localStorage.setItem('lyf_owner_device', MASTER_OWNER_KEY);
-        alert("✨ Perangkat ini telah terdaftar sebagai Pemilik Asli Easter Egg!");
-        logoClickCount = 0;
+        alert("✨ Perangkat ini sudah sukses terdaftar sebagai Pemilik!");
+        clickCounter = 0;
         return;
       }
 
-      // JIKA DIKLIK 5 KALI = BUKA EASTER EGG
-      if (logoClickCount === 5) {
-        logoClickCount = 0;
-        navigateTo('/etrggln88n');
-      } else {
-        navigateTo('/');
+      // JIKA HANYA DIKLIK 5-9 KALI KETIKA STOP
+      if (clickCounter === 5) {
+        // Tanda khusus jika perangkat sudah terdaftar sebagai pemilik, langsung ke halaman Easter Egg
+        if (isOwnerDevice()) {
+          clickCounter = 0;
+          navigateTo('/etrggln88n');
+        }
       }
     }
 
-    // ==========================================
-    // PASSWORD & PLAN CONFIG
-    // ==========================================
     const PASSWORDS = { 'pro': '3400', 'premium': '3418', 'platinum': '7238' };
     const LIMITS = { 'Pro': 1000, 'Premium': 10000, 'Platinum': Infinity };
 
@@ -744,16 +725,13 @@
         modal.style.display = 'flex';
         selectStep.style.display = 'block';
       } else if (path === '/etrggln88n') {
-        // PERIKSA PAKAKAH PERANGKAT PEMILIK?
         hero.style.display = 'block';
         grid.style.display = 'grid';
         workspace.style.display = 'none';
 
         if (isOwnerDevice()) {
-          // Buka Easter Egg untuk kamu
           easterEggModal.style.display = 'flex';
         } else {
-          // Blokir jika disebar ke orang lain
           accessDeniedModal.style.display = 'flex';
         }
       } else if (path.startsWith('/mulai-jadi-premium/')) {
