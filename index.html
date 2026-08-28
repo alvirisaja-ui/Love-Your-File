@@ -49,10 +49,7 @@
       display: inline-block;
     }
 
-    .brand:active {
-      transform: scale(0.95);
-    }
-
+    .brand:active { transform: scale(0.95); }
     .brand span { font-weight: 400; color: #666666; }
 
     .nav-links {
@@ -228,7 +225,6 @@
     }
 
     .drop-zone:hover { border-color: #000000; background: #f0f0f0; }
-
     input[type="file"] { display: none; }
 
     .converter-select-grid {
@@ -238,16 +234,8 @@
       margin-bottom: 1.5rem;
     }
 
-    .form-group {
-      margin-bottom: 1.25rem;
-    }
-
-    .form-group label {
-      display: block;
-      font-size: 0.8rem;
-      font-weight: 700;
-      margin-bottom: 0.4rem;
-    }
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem; }
 
     select, input[type="password"] {
       width: 100%;
@@ -259,9 +247,7 @@
       outline: none;
     }
 
-    select:focus, input[type="password"]:focus {
-      border-color: #000000;
-    }
+    select:focus, input[type="password"]:focus { border-color: #000000; }
 
     .btn {
       width: 100%;
@@ -310,7 +296,7 @@
     .progress-bar-bg { width: 100%; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
     .progress-bar-fill { height: 100%; width: 0%; background: #000000; transition: width 0.2s ease; }
 
-    /* MODAL POPUP PREM / PRICING & VERIFIKASI */
+    /* MODAL POPUP */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -363,7 +349,6 @@
     .plan-limit { font-size: 0.85rem; font-weight: 700; color: #333333; margin-bottom: 0.8rem; }
     .plan-desc { font-size: 0.78rem; color: #666666; line-height: 1.4; margin-bottom: 1.25rem; }
 
-    /* TAMPILAN PASSWORD & SUKSES */
     .password-view, .success-view {
       display: none;
       max-width: 400px;
@@ -384,20 +369,14 @@
     }
 
     .green-check-icon {
-      width: 64px;
-      height: 64px;
-      background: #28a745;
-      color: #ffffff;
+      width: 64px; height: 64px;
+      background: #28a745; color: #ffffff;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 1rem auto;
-      font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
     }
 
-    /* MODAL EASTER EGG (SECRET PASSWORDS) */
+    /* EASTER EGG STYLES */
     .easter-egg-box {
       background: #111111;
       color: #ffffff;
@@ -606,7 +585,7 @@
         <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
       </div>
 
-      <!-- STEP 3: HASIL SUKSES (CENTANG HIJAU) -->
+      <!-- STEP 3: HASIL SUKSES -->
       <div id="modalSuccessStep" class="success-view">
         <div class="green-check-icon">✓</div>
         <h2 class="modal-title" style="margin-bottom: 0.5rem;">Berhasil Ditambahkan!</h2>
@@ -619,13 +598,13 @@
     </div>
   </div>
 
-  <!-- MODAL EASTER EGG (SECRET PASSWORDS UNLOCKED - /etrggln88n) -->
+  <!-- MODAL EASTER EGG (SECRET UNLOCKED) -->
   <div class="modal-overlay" id="easterEggModal">
     <div class="modal-card" style="max-width: 480px; text-align: center;">
       <button class="modal-close" onclick="closeModal()">&times;</button>
       <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉 Secret Unlocked!</div>
-      <h2 class="modal-title">Kamu Menemukan Easter Egg!</h2>
-      <p class="modal-subtitle">Kamu sangat niat dan teliti! Ini adalah kode sandi rahasia untuk membuka paket VIP:</p>
+      <h2 class="modal-title">Easter Egg Khusus Kamu!</h2>
+      <p class="modal-subtitle">Akses rahasia ini telah dikunci khusus hanya untuk perangkat kamu:</p>
 
       <div class="easter-egg-box">
         <div>> KODE PRO: <span>3400</span></div>
@@ -637,6 +616,19 @@
     </div>
   </div>
 
+  <!-- MODAL ERROR / BLOCKED UNTUK ORANG LAIN -->
+  <div class="modal-overlay" id="accessDeniedModal">
+    <div class="modal-card" style="max-width: 420px; text-align: center;">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🔒</div>
+      <h2 class="modal-title">Akses Ditolak!</h2>
+      <p class="modal-subtitle" style="margin-top: 0.5rem;">
+        Halaman Easter Egg ini hanya dapat diakses oleh pemilik lisensi perangkat asli. Tautan tidak dapat dibagikan!
+      </p>
+      <button class="btn" onclick="closeModal()" style="margin-top: 1rem;">Kembali ke Home</button>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2026 LoveYourFile. All rights reserved.</p>
   </footer>
@@ -645,39 +637,50 @@
     let selectedFiles = { compress: null, convert: null };
     let currentTargetPlan = null;
 
-    // SISTEM EASTER EGG (KLIK LOGO 5 KALI KE /etrggln88n)
+    // ==========================================
+    // ANTI-SHARE & DEVICE LOCK SYSTEM
+    // ==========================================
+    // Kunci Rahasia Pemilik (Hanya Kamu yang Tahu Cara Mengaktifkannya)
+    const MASTER_OWNER_KEY = "LYF_SECRET_OWNER_PERMITTED_9921";
+
+    // Cek apakah HP/Browser ini adalah milik Kamu
+    function isOwnerDevice() {
+      return localStorage.getItem('lyf_owner_device') === MASTER_OWNER_KEY;
+    }
+
+    // CARA AKTIFKAN DI HP KAMU:
+    // Klik logo 10 kali cepat (atau tekan lama jika kamu tentukan) untuk daftarkan HP kamu sebagai Pemilik Asli.
     let logoClickCount = 0;
     let logoClickTimer = null;
 
     function handleLogoClick() {
       logoClickCount++;
-      
       clearTimeout(logoClickTimer);
-      logoClickTimer = setTimeout(() => {
-        logoClickCount = 0;
-      }, 3000); // Reset jika tidak diklik 5x dalam 3 detik
+      logoClickTimer = setTimeout(() => { logoClickCount = 0; }, 2500);
 
-      if (logoClickCount >= 5) {
+      // JIKA DIKLIK 10 KALI = AKTIFKAN PERANGKAT SEBAGAI PEMILIK (Hanya Kamu yang Tahu)
+      if (logoClickCount === 10) {
+        localStorage.setItem('lyf_owner_device', MASTER_OWNER_KEY);
+        alert("✨ Perangkat ini telah terdaftar sebagai Pemilik Asli Easter Egg!");
         logoClickCount = 0;
-        navigateTo('/etrggln88n'); // UBAH URL JADI /etrggln88n
+        return;
+      }
+
+      // JIKA DIKLIK 5 KALI = BUKA EASTER EGG
+      if (logoClickCount === 5) {
+        logoClickCount = 0;
+        navigateTo('/etrggln88n');
       } else {
         navigateTo('/');
       }
     }
 
-    const PASSWORDS = {
-      'pro': '3400',
-      'premium': '3418',
-      'platinum': '7238'
-    };
+    // ==========================================
+    // PASSWORD & PLAN CONFIG
+    // ==========================================
+    const PASSWORDS = { 'pro': '3400', 'premium': '3418', 'platinum': '7238' };
+    const LIMITS = { 'Pro': 1000, 'Premium': 10000, 'Platinum': Infinity };
 
-    const LIMITS = {
-      'Pro': 1000,
-      'Premium': 10000,
-      'Platinum': Infinity
-    };
-
-    // PERHITUNGAN LIMIT HARIAN
     const TODAY = new Date().toISOString().slice(0, 10);
     let userPlan = localStorage.getItem('lyf_plan') || 'Free';
     let maxLimit = userPlan === 'Pro' ? 1000 : userPlan === 'Premium' ? 10000 : userPlan === 'Platinum' ? Infinity : 10;
@@ -694,15 +697,9 @@
     function updateUsageUI() {
       const display = document.getElementById('usageDisplay');
       const btnNav = document.getElementById('premiumBtnNav');
-      
       const limitText = maxLimit === Infinity ? "∞" : maxLimit;
       display.innerText = `${usageCount} / ${limitText} (${userPlan})`;
-
-      if (userPlan !== 'Free') {
-        btnNav.innerText = "Ubah Langganan";
-      } else {
-        btnNav.innerText = "Mulai jadi Premium";
-      }
+      btnNav.innerText = (userPlan !== 'Free') ? "Ubah Langganan" : "Mulai jadi Premium";
     }
 
     function navigateTo(path) {
@@ -716,6 +713,7 @@
       const workspace = document.getElementById('workspaceArea');
       const modal = document.getElementById('subscriptionModal');
       const easterEggModal = document.getElementById('easterEggModal');
+      const accessDeniedModal = document.getElementById('accessDeniedModal');
 
       const selectStep = document.getElementById('modalSelectStep');
       const passwordStep = document.getElementById('modalPasswordStep');
@@ -723,11 +721,11 @@
 
       document.querySelectorAll('.tool-view').forEach(view => view.style.display = 'none');
 
-      // RESET MODAL STEPS
       selectStep.style.display = 'none';
       passwordStep.style.display = 'none';
       successStep.style.display = 'none';
       easterEggModal.style.display = 'none';
+      accessDeniedModal.style.display = 'none';
       modal.style.display = 'none';
 
       if (path === '/kompres-file') {
@@ -746,11 +744,18 @@
         modal.style.display = 'flex';
         selectStep.style.display = 'block';
       } else if (path === '/etrggln88n') {
-        // RUTE KHUSUS EASTER EGG
+        // PERIKSA PAKAKAH PERANGKAT PEMILIK?
         hero.style.display = 'block';
         grid.style.display = 'grid';
         workspace.style.display = 'none';
-        easterEggModal.style.display = 'flex';
+
+        if (isOwnerDevice()) {
+          // Buka Easter Egg untuk kamu
+          easterEggModal.style.display = 'flex';
+        } else {
+          // Blokir jika disebar ke orang lain
+          accessDeniedModal.style.display = 'flex';
+        }
       } else if (path.startsWith('/mulai-jadi-premium/')) {
         const planSlug = path.split('/mulai-jadi-premium/')[1].toLowerCase();
         if (['pro', 'premium', 'platinum'].includes(planSlug)) {
@@ -765,7 +770,6 @@
           navigateTo('/mulai-jadi-premium');
         }
       } else {
-        // Path Normal / Home
         hero.style.display = 'block';
         grid.style.display = 'grid';
         workspace.style.display = 'none';
@@ -780,14 +784,12 @@
       if (inputPass === correctPass) {
         errorBox.style.display = 'none';
         
-        // Simpan Paket
         const formattedPlanName = currentTargetPlan.charAt(0).toUpperCase() + currentTargetPlan.slice(1);
         userPlan = formattedPlanName;
         maxLimit = LIMITS[formattedPlanName];
         localStorage.setItem('lyf_plan', formattedPlanName);
         updateUsageUI();
 
-        // Tampilkan Sukses
         document.getElementById('modalPasswordStep').style.display = 'none';
         document.getElementById('successMessageText').innerText = `kamu sekarang sudah jadi ${currentTargetPlan}`;
         document.getElementById('modalSuccessStep').style.display = 'block';
@@ -812,11 +814,7 @@
       btnElement.classList.add('active');
 
       document.querySelectorAll('.tool-card').forEach(card => {
-        if (category === 'all' || card.dataset.category === category) {
-          card.style.display = 'flex';
-        } else {
-          card.style.display = 'none';
-        }
+        card.style.display = (category === 'all' || card.dataset.category === category) ? 'flex' : 'none';
       });
     }
 
