@@ -204,7 +204,7 @@
       border: 1px solid #e5e5e5;
       border-radius: 12px;
       padding: 2rem;
-      max-width: 800px;
+      max-width: 850px;
       margin: 0 auto;
     }
 
@@ -248,7 +248,7 @@
     .form-group { margin-bottom: 1.25rem; }
     .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem; }
 
-    select, input[type="password"], input[type="text"] {
+    select, input[type="password"], input[type="text"], input[type="number"] {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid #cccccc;
@@ -258,7 +258,7 @@
       outline: none;
     }
 
-    select:focus, input[type="password"]:focus, input[type="text"]:focus { border-color: #000000; }
+    select:focus, input[type="password"]:focus, input[type="text"]:focus, input[type="number"]:focus { border-color: #000000; }
 
     .btn {
       width: 100%;
@@ -387,12 +387,12 @@
       font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
     }
 
-    /* ADMIN DASHBOARD STYLES */
+    /* ADMIN DASHBOARD ADVANCED STYLES */
     .admin-card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .stat-card {
@@ -402,14 +402,49 @@
       border-radius: 8px;
     }
 
-    .stat-card h4 { font-size: 0.8rem; color: #666; text-transform: uppercase; margin-bottom: 0.5rem; }
-    .stat-card .value { font-size: 1.4rem; font-weight: 800; color: #000; }
+    .stat-card h4 { font-size: 0.75rem; color: #666; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 1.2rem; font-weight: 800; color: #000; }
 
-    .admin-actions {
-      display: flex;
-      flex-wrap: wrap;
+    .admin-section-box {
+      border: 1px solid #e5e5e5;
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-section-box h3 {
+      font-size: 1rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.4rem;
+    }
+
+    .admin-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: 1rem;
-      margin-top: 1.5rem;
+    }
+
+    .log-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .log-table th, .log-table td {
+      border: 1px solid #e0e0e0;
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+    }
+
+    .log-table th { background: #eeeeee; font-weight: 700; }
+
+    .maintenance-banner {
+      background: #d9534f;
+      color: #ffffff;
+      text-align: center;
+      padding: 0.75rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: none;
     }
 
     footer {
@@ -422,13 +457,19 @@
       user-select: none;
     }
 
-    @media (max-width: 600px) {
-      .converter-select-grid { grid-template-columns: 1fr; }
+    @media (max-width: 650px) {
+      .converter-select-grid, .admin-grid-2col { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
 
+  <!-- MAINTENANCE BANNER -->
+  <div class="maintenance-banner" id="maintenanceBanner">
+    ⚠️ SITEM DALAM PERBAIKAN (MAINTENANCE MODE). AKSES FILE DIBATASI OLEH ADMIN.
+  </div>
+
+  <!-- NAVBAR -->
   <header>
     <a class="brand" id="brandLogo" onclick="handleLogoClick()">LoveYour<span>File</span></a>
     <div class="nav-links">
@@ -441,6 +482,7 @@
     </div>
   </header>
 
+  <!-- HERO BANNER -->
   <div class="hero" id="heroSection">
     <h1>Semua Alat Pengelola File di Satu Tempat</h1>
     <p>Kompresi & konversi dokumen atau media secara instan. 100% cepat dan tanpa ribet.</p>
@@ -452,6 +494,7 @@
     </div>
   </div>
 
+  <!-- MAIN CONTAINER -->
   <main>
     <div class="tools-grid" id="toolsGrid">
       <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
@@ -471,18 +514,20 @@
       </div>
     </div>
 
+    <!-- WORKSPACE -->
     <div class="workspace" id="workspaceArea">
       <div class="workspace-header">
         <button class="btn-back" onclick="handleBackClick()">← Kembali ke Home</button>
         <h2 id="workspaceTitle" style="font-size: 1.15rem; font-weight: 800;">Judul Alat</h2>
       </div>
 
+      <!-- TOOL: KOMPRES -->
       <div id="compressTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="compressError"></div>
         <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
           <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
           <p style="font-weight: 700;">Klik atau seret file ke sini</p>
-          <span style="font-size: 0.8rem; color: #777;">Format .exe tidak didukung</span>
+          <span style="font-size: 0.8rem; color: #777;" id="compressLimitHint">Format .exe tidak didukung</span>
         </div>
         <input type="file" id="compressInput" onchange="handleFileSelect(this, 'compress')">
         <div class="file-info" id="compressFileInfo"></div>
@@ -494,6 +539,7 @@
         <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
       </div>
 
+      <!-- TOOL: CONVERT -->
       <div id="convertTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="convertError"></div>
         <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
@@ -545,6 +591,7 @@
         <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
       </div>
 
+      <!-- ADMIN LOGIN VIEW -->
       <div id="adminLoginTool" class="tool-view" style="display: none; max-width: 400px; margin: 0 auto;">
         <h2 style="text-align: center; margin-bottom: 0.5rem; font-weight: 800;">Login Admin</h2>
         <p style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 1.5rem;">Masuk ke sistem kontrol utama.</p>
@@ -562,55 +609,130 @@
         <button class="btn" onclick="processAdminLogin()">Login ke Dashboard</button>
       </div>
 
+      <!-- ADMIN DASHBOARD VIEW (ADVANCED) -->
       <div id="adminDashboardTool" class="tool-view" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-          <h2 style="font-weight: 800;">Dashboard Admin</h2>
+          <h2 style="font-weight: 800;">Dashboard Kontrol Admin</h2>
           <button class="filter-btn" onclick="logoutAdmin()">Logout Admin</button>
         </div>
 
+        <!-- METRICS CARDS -->
         <div class="admin-card-grid">
           <div class="stat-card">
-            <h4>Paket Pengguna Saat Ini</h4>
+            <h4>Paket Pengguna</h4>
             <div class="value" id="admUserPlan">Free</div>
           </div>
           <div class="stat-card">
-            <h4>Total Pemakaian File</h4>
+            <h4>Pemakaian Hari Ini</h4>
             <div class="value" id="admUsageCount">0</div>
           </div>
           <div class="stat-card">
-            <h4>Easter Egg Terpilih</h4>
-            <div class="value" id="admEELocation" style="font-size: 1rem;">-</div>
+            <h4>Easter Egg Aktif</h4>
+            <div class="value" id="admEELocation" style="font-size: 0.85rem;">-</div>
           </div>
           <div class="stat-card">
-            <h4>Status Easter Egg</h4>
-            <div class="value" id="admEEStatus" style="font-size: 1.1rem;">-</div>
+            <h4>Status Maintenance</h4>
+            <div class="value" id="admMaintStatus" style="font-size: 1rem;">OFF</div>
           </div>
         </div>
 
-        <h3 style="margin-bottom: 1rem; font-weight: 800;">Aksi Kontrol Admin</h3>
-        <div class="form-group" style="max-width: 300px;">
-          <label>Paksa Ganti Paket Perangkat Ini:</label>
-          <select id="admSetPlanSelect" onchange="adminChangePlan(this.value)">
-            <option value="Free">Free (10x/hari)</option>
-            <option value="Pro">Pro (1.000x/hari)</option>
-            <option value="Premium">Premium (10.000x/hari)</option>
-            <option value="Platinum">Platinum (Unlimited)</option>
-          </select>
+        <!-- SYSTEM CONFIGURATION SECTION -->
+        <div class="admin-section-box">
+          <h3>1. Kontrol Sistem & Sandbox File</h3>
+          <div class="admin-grid-2col">
+            <div class="form-group">
+              <label>Batas Maksimal Ukuran File Upload (MB):</label>
+              <input type="number" id="admMaxFileSize" value="50" onchange="adminUpdateSettings()">
+            </div>
+            <div class="form-group">
+              <label>Simulasi Kecepatan Proses File:</label>
+              <select id="admProcessSpeed" onchange="adminUpdateSettings()">
+                <option value="100">Sangat Cepat (100ms)</option>
+                <option value="250" selected>Normal (250ms)</option>
+                <option value="500">Lambat (500ms)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="admBlockExe" checked onchange="adminUpdateSettings()"> 
+              Blokir Pengunggahan Ekstensi File .exe
+            </label>
+          </div>
         </div>
 
-        <div class="admin-actions">
-          <button class="btn" style="width: auto; background: #28a745; border-color: #28a745;" onclick="adminResetUsage()">Reset Pemakaian Hari Ini</button>
-          <button class="btn" style="width: auto; background: #dc3545; border-color: #dc3545;" onclick="adminResetEE()">Reset & Acak Ulang Easter Egg</button>
+        <!-- PASSWORD MANAGEMENT SECTION -->
+        <div class="admin-section-box">
+          <h3>2. Manajemen Kode Sandi Paket</h3>
+          <div class="admin-grid-2col">
+            <div class="form-group">
+              <label>Sandi Paket PRO:</label>
+              <input type="text" id="admPassPro" value="3400">
+            </div>
+            <div class="form-group">
+              <label>Sandi Paket PREMIUM:</label>
+              <input type="text" id="admPassPremium" value="3418">
+            </div>
+          </div>
+          <div class="form-group" style="max-width: 50%;">
+            <label>Sandi Paket PLATINUM:</label>
+            <input type="text" id="admPassPlatinum" value="7238">
+          </div>
+          <button class="btn" style="width: auto;" onclick="adminSavePasswords()">Simpan Perubahan Sandi</button>
         </div>
+
+        <!-- LOG HISTORY SECTION -->
+        <div class="admin-section-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 style="border: none; padding: 0; margin: 0;">3. Riwayat Aktivitas File Pengguna</h3>
+            <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="adminClearLogs()">Hapus Log</button>
+          </div>
+          <div style="max-height: 200px; overflow-y: auto;">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Waktu</th>
+                  <th>Aksi</th>
+                  <th>Nama File</th>
+                  <th>Ukuran</th>
+                </tr>
+              </thead>
+              <tbody id="admLogTableBody">
+                <tr><td colspan="4" style="text-align: center; color: #999;">Belum ada aktivitas tercatat.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS SECTION -->
+        <div class="admin-section-box">
+          <h3>4. Akses Cepat & Maintenance Switch</h3>
+          <div class="admin-actions">
+            <div class="form-group" style="margin: 0; flex: 1; min-width: 200px;">
+              <select id="admSetPlanSelect" onchange="adminChangePlan(this.value)">
+                <option value="Free">Set Paket: Free (10x)</option>
+                <option value="Pro">Set Paket: Pro (1.000x)</option>
+                <option value="Premium">Set Paket: Premium (10.000x)</option>
+                <option value="Platinum">Set Paket: Platinum (Unlimited)</option>
+              </select>
+            </div>
+            <button class="btn" style="width: auto; background: #28a745; border-color: #28a745;" onclick="adminResetUsage()">Reset Limit Hari Ini</button>
+            <button class="btn" style="width: auto; background: #ffc107; color: #000; border-color: #ffc107;" onclick="adminResetEE()">Acak Ulang Easter Egg</button>
+            <button class="btn" id="btnToggleMaintenance" style="width: auto; background: #dc3545; border-color: #dc3545;" onclick="adminToggleMaintenance()">Aktifkan Maintenance Mode</button>
+          </div>
+        </div>
+
       </div>
 
     </div>
   </main>
 
+  <!-- MODAL LANGGANAN / PRICING -->
   <div class="modal-overlay" id="subscriptionModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
       
+      <!-- STEP 1: PILIH PAKET -->
       <div id="modalSelectStep">
         <h2 class="modal-title">Pilih Paket Langganan</h2>
         <p class="modal-subtitle">Tingkatkan batas pemakaian harian untuk akses lebih cepat dan luas.</p>
@@ -645,6 +767,7 @@
         </div>
       </div>
 
+      <!-- STEP 2: INPUT SANDI -->
       <div id="modalPasswordStep" class="password-view">
         <h2 class="modal-title" id="passViewTitle">Verifikasi Paket</h2>
         <p class="modal-subtitle">Masukkan kata sandi untuk mengaktifkan paket ini.</p>
@@ -660,6 +783,7 @@
         <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
       </div>
 
+      <!-- STEP 3: HASIL SUKSES -->
       <div id="modalSuccessStep" class="success-view">
         <div class="green-check-icon">✓</div>
         <h2 class="modal-title" style="margin-bottom: 0.5rem;" id="successTitleText">Berhasil Ditambahkan!</h2>
@@ -681,6 +805,16 @@
     let currentTargetPlan = null;
     let isAdminLoggedIn = false;
 
+    // CONFIGURATIONS (ADMIN SETTINGS)
+    let PASSWORDS = JSON.parse(localStorage.getItem('lyf_passwords')) || { 'pro': '3400', 'premium': '3418', 'platinum': '7238' };
+    let systemSettings = JSON.parse(localStorage.getItem('lyf_settings')) || {
+      maxMB: 50,
+      speed: 250,
+      blockExe: true,
+      maintenance: false
+    };
+    let activityLogs = JSON.parse(localStorage.getItem('lyf_activity_logs')) || [];
+
     // ==========================================
     // EXCLUSIVE SINGLE EASTER EGG PER DEVICE
     // ==========================================
@@ -696,9 +830,9 @@
     const TRIGGER_DESCRIPTIONS = {
       "logo_click_5": "Klik Logo 5x",
       "footer_dblclick": "Double Click Footer Text",
-      "same_format_select": "Pilih Format Awal = Format Tujuan",
-      "secret_filename": "Upload File berakhiran '_secret'",
-      "typing_secret": "Ketik Kata 'secret' di Keyboard"
+      "same_format_select": "Format Awal = Format Tujuan",
+      "secret_filename": "File berakhiran '_secret'",
+      "typing_secret": "Ketik Kata 'secret'"
     };
 
     function initExclusiveDeviceEE() {
@@ -794,7 +928,6 @@
     // ==========================================
     // SYSTEM CORE & PLAN MANAGEMENT
     // ==========================================
-    const PASSWORDS = { 'pro': '3400', 'premium': '3418', 'platinum': '7238' };
     const LIMITS = { 'Pro': 1000, 'Premium': 10000, 'Platinum': Infinity, 'Free': 10 };
 
     const TODAY = new Date().toISOString().slice(0, 10);
@@ -824,10 +957,25 @@
       const limitText = maxLimit === Infinity ? "∞" : maxLimit;
       display.innerText = `${usageCount} / ${limitText} (${userPlan})`;
       btnNav.innerText = (userPlan !== 'Free') ? "Ubah Langganan" : "Mulai jadi Premium";
+      
+      const maintenanceBanner = document.getElementById('maintenanceBanner');
+      if (systemSettings.maintenance) {
+        maintenanceBanner.style.display = 'block';
+      } else {
+        maintenanceBanner.style.display = 'none';
+      }
+    }
+
+    function addLog(action, fileName, size) {
+      const timeStr = new Date().toLocaleTimeString('id-ID');
+      activityLogs.unshift({ time: timeStr, action, fileName, size });
+      if (activityLogs.length > 20) activityLogs.pop();
+      localStorage.setItem('lyf_activity_logs', JSON.stringify(activityLogs));
+      if (isAdminLoggedIn) renderAdminLogs();
     }
 
     // ==========================================
-    // ADMIN SYSTEM (LOGIN & DASHBOARD)
+    // ADMIN SYSTEM (ADVANCED CONTROLS)
     // ==========================================
     function processAdminLogin() {
       const u = document.getElementById('adminUsername').value.trim();
@@ -847,8 +995,74 @@
       document.getElementById('admUserPlan').innerText = userPlan;
       document.getElementById('admUsageCount').innerText = `${usageCount} File`;
       document.getElementById('admEELocation').innerText = `${TRIGGER_DESCRIPTIONS[activeEE.trigger]} (${activeEE.reward})`;
-      document.getElementById('admEEStatus').innerText = activeEE.claimed ? "✅ Ditemukan" : "❌ Belum Ditemukan";
+      document.getElementById('admMaintStatus').innerText = systemSettings.maintenance ? "ON (AKTIF)" : "OFF";
       document.getElementById('admSetPlanSelect').value = userPlan;
+
+      document.getElementById('admMaxFileSize').value = systemSettings.maxMB;
+      document.getElementById('admProcessSpeed').value = systemSettings.speed;
+      document.getElementById('admBlockExe').checked = systemSettings.blockExe;
+
+      document.getElementById('admPassPro').value = PASSWORDS.pro;
+      document.getElementById('admPassPremium').value = PASSWORDS.premium;
+      document.getElementById('admPassPlatinum').value = PASSWORDS.platinum;
+
+      const maintBtn = document.getElementById('btnToggleMaintenance');
+      if (systemSettings.maintenance) {
+        maintBtn.innerText = "Matikan Maintenance Mode";
+        maintBtn.style.background = "#28a745";
+        maintBtn.style.borderColor = "#28a745";
+      } else {
+        maintBtn.innerText = "Aktifkan Maintenance Mode";
+        maintBtn.style.background = "#dc3545";
+        maintBtn.style.borderColor = "#dc3545";
+      }
+
+      renderAdminLogs();
+    }
+
+    function renderAdminLogs() {
+      const tbody = document.getElementById('admLogTableBody');
+      if (activityLogs.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" style="text-align: center; color: #999;">Belum ada aktivitas tercatat.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = activityLogs.map(log => `
+        <tr>
+          <td>${log.time}</td>
+          <td><b>${log.action}</b></td>
+          <td>${log.fileName}</td>
+          <td>${log.size}</td>
+        </tr>
+      `).join('');
+    }
+
+    function adminUpdateSettings() {
+      systemSettings.maxMB = parseInt(document.getElementById('admMaxFileSize').value, 10) || 50;
+      systemSettings.speed = parseInt(document.getElementById('admProcessSpeed').value, 10) || 250;
+      systemSettings.blockExe = document.getElementById('admBlockExe').checked;
+      localStorage.setItem('lyf_settings', JSON.stringify(systemSettings));
+    }
+
+    function adminSavePasswords() {
+      PASSWORDS.pro = document.getElementById('admPassPro').value.trim();
+      PASSWORDS.premium = document.getElementById('admPassPremium').value.trim();
+      PASSWORDS.platinum = document.getElementById('admPassPlatinum').value.trim();
+      localStorage.setItem('lyf_passwords', JSON.stringify(PASSWORDS));
+      alert('Sandi paket langganan berhasil diperbarui!');
+    }
+
+    function adminClearLogs() {
+      activityLogs = [];
+      localStorage.removeItem('lyf_activity_logs');
+      renderAdminLogs();
+    }
+
+    function adminToggleMaintenance() {
+      systemSettings.maintenance = !systemSettings.maintenance;
+      localStorage.setItem('lyf_settings', JSON.stringify(systemSettings));
+      updateUsageUI();
+      updateAdminDashboardUI();
     }
 
     function adminChangePlan(newPlan) {
@@ -1007,10 +1221,25 @@
 
       if (!file) return;
 
+      if (systemSettings.maintenance) {
+        errorEl.innerText = "⛔ Fitur sedang di-maintenance oleh Admin.";
+        errorEl.style.display = 'block';
+        input.value = '';
+        return;
+      }
+
       checkFilenameTrigger(file.name);
 
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > systemSettings.maxMB) {
+        errorEl.innerText = `⚠️ Ukuran file melebihi batas admin (${systemSettings.maxMB} MB).`;
+        errorEl.style.display = 'block';
+        input.value = '';
+        return;
+      }
+
       const fileExtension = file.name.split('.').pop().toLowerCase();
-      if (fileExtension === 'exe') {
+      if (systemSettings.blockExe && fileExtension === 'exe') {
         errorEl.innerText = "⚠️ Format .exe tidak didukung.";
         errorEl.style.display = 'block';
         input.value = '';
@@ -1025,6 +1254,11 @@
     }
 
     function startProcess(type) {
+      if (systemSettings.maintenance) {
+        alert("Situs sedang berada dalam Maintenance Mode oleh Admin.");
+        return;
+      }
+
       if (usageCount >= maxLimit) {
         navigateTo('/mulai-jadi-premium');
         return;
@@ -1045,6 +1279,8 @@
       progressPercent.innerText = '0%';
 
       let progress = 0;
+      const speed = systemSettings.speed || 250;
+
       const interval = setInterval(() => {
         progress += Math.floor(Math.random() * 15) + 10;
         
@@ -1056,7 +1292,9 @@
             usageCount++;
             localStorage.setItem('lyf_usage', usageCount.toString());
             updateUsageUI();
-            if (isAdminLoggedIn) updateAdminDashboardUI();
+            
+            const sizeFormatted = `${(file.size / 1024).toFixed(1)} KB`;
+            addLog(type === 'compress' ? 'Kompresi' : 'Konversi', file.name, sizeFormatted);
 
             const blob = new Blob([file], { type: file.type });
             const url = URL.createObjectURL(blob);
@@ -1081,7 +1319,7 @@
 
         progressBar.style.width = `${progress}%`;
         progressPercent.innerText = `${progress}%`;
-      }, 150);
+      }, speed);
     }
   </script>
 </body>
