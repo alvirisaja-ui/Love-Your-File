@@ -9,12 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
-    /* RESET & BASE MONOKROM */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       font-family: 'Montserrat', sans-serif;
@@ -29,7 +24,7 @@
 
     /* NAVBAR */
     header {
-      padding: 1.25rem 5%;
+      padding: 1rem 5%;
       background: #ffffff;
       border-bottom: 1px solid #e5e5e5;
       display: flex;
@@ -38,10 +33,12 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      flex-wrap: wrap;
+      gap: 0.75rem;
     }
 
     .brand {
-      font-size: 1.75rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: #000000;
       text-decoration: none;
@@ -49,74 +46,90 @@
       cursor: pointer;
     }
 
-    .brand span {
-      font-weight: 400;
-      color: #666666;
-    }
+    .brand span { font-weight: 400; color: #666666; }
 
     .nav-links {
       display: flex;
-      gap: 1.5rem;
+      gap: 0.8rem;
       align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-link {
       text-decoration: none;
       color: #444444;
       font-weight: 600;
-      font-size: 0.9rem;
-      transition: color 0.2s;
+      font-size: 0.85rem;
       cursor: pointer;
     }
 
-    .nav-link:hover {
-      color: #000000;
+    .nav-link:hover { color: #000000; }
+
+    .usage-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #f0f0f0;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid #e0e0e0;
     }
+
+    .btn-premium-nav {
+      background: #000000;
+      color: #ffffff;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn-premium-nav:hover { background: #333333; }
 
     /* HERO SECTION */
     .hero {
       text-align: center;
-      padding: 4rem 1rem 2.5rem 1rem;
+      padding: 3rem 1rem 2rem 1rem;
       max-width: 900px;
       margin: 0 auto;
     }
 
     .hero h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 800;
       color: #000000;
       letter-spacing: -1px;
       line-height: 1.25;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
     }
 
     .hero p {
-      font-size: 1.05rem;
+      font-size: 1rem;
       color: #666666;
       font-weight: 500;
       line-height: 1.6;
     }
 
-    /* TOOL FILTER BUTTONS */
     .filter-container {
       display: flex;
       justify-content: center;
       gap: 0.75rem;
-      margin: 1.5rem auto 3rem auto;
+      margin: 1.5rem auto 2.5rem auto;
       flex-wrap: wrap;
     }
 
     .filter-btn {
-      padding: 0.6rem 1.4rem;
+      padding: 0.55rem 1.2rem;
       border: 1px solid #e0e0e0;
       background: #ffffff;
       color: #555555;
       font-family: inherit;
       font-weight: 700;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       border-radius: 30px;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
 
     .filter-btn:hover, .filter-btn.active {
@@ -125,18 +138,16 @@
       border-color: #000000;
     }
 
-    /* MAIN CONTENT AREA */
     main {
       flex: 1;
       max-width: 1100px;
       width: 90%;
-      margin: 0 auto 4rem auto;
+      margin: 0 auto 3rem auto;
     }
 
-    /* FEATURE GRID */
     .tools-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
     }
 
@@ -144,48 +155,40 @@
       background: #ffffff;
       border: 1px solid #e5e5e5;
       border-radius: 12px;
-      padding: 2rem;
-      text-decoration: none;
-      color: inherit;
-      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      padding: 1.75rem;
       cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
 
     .tool-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+      transform: translateY(-3px);
       border-color: #000000;
     }
 
-    .tool-icon {
-      font-size: 2.2rem;
-      margin-bottom: 1.2rem;
-    }
+    .tool-icon { font-size: 2rem; margin-bottom: 1rem; }
 
     .tool-card h3 {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
       font-weight: 800;
-      color: #000000;
-      margin-bottom: 0.6rem;
+      margin-bottom: 0.5rem;
     }
 
     .tool-card p {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: #666666;
       line-height: 1.5;
     }
 
-    /* WORKSPACE CONTAINER */
+    /* WORKSPACE */
     .workspace {
       display: none;
       background: #ffffff;
       border: 1px solid #e5e5e5;
       border-radius: 12px;
-      padding: 2.5rem;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      padding: 2rem;
       max-width: 800px;
       margin: 0 auto;
     }
@@ -205,94 +208,57 @@
       font-size: 0.85rem;
       color: #666666;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
     }
 
-    .btn-back:hover {
-      color: #000000;
-    }
-
-    /* DRAG & DROP AREA */
     .drop-zone {
       border: 2px dashed #cccccc;
       border-radius: 8px;
-      padding: 3.5rem 1.5rem;
+      padding: 3rem 1.5rem;
       text-align: center;
       background: #fafafa;
       cursor: pointer;
-      transition: border-color 0.2s ease, background 0.2s ease;
       margin-bottom: 1.5rem;
     }
 
-    .drop-zone:hover, .drop-zone.dragover {
-      border-color: #000000;
-      background: #f0f0f0;
-    }
+    .drop-zone:hover { border-color: #000000; background: #f0f0f0; }
 
-    .drop-icon {
-      font-size: 2.5rem;
-      margin-bottom: 0.75rem;
-    }
+    input[type="file"] { display: none; }
 
-    .drop-zone p {
-      color: #121212;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .drop-zone span {
-      color: #777777;
-      font-size: 0.8rem;
-      display: block;
-      margin-top: 0.4rem;
-    }
-
-    input[type="file"] {
-      display: none;
-    }
-
-    /* FORMS & DUAL SELECT */
     .converter-select-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
+      gap: 1.25rem;
       margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
     }
 
     .form-group label {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      color: #121212;
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
     }
 
-    select {
+    select, input[type="password"] {
       width: 100%;
-      padding: 0.85rem 1rem;
-      background: #ffffff;
+      padding: 0.75rem 1rem;
       border: 1px solid #cccccc;
       border-radius: 6px;
-      color: #121212;
       font-family: inherit;
-      font-size: 0.95rem;
-      font-weight: 500;
+      font-size: 0.9rem;
       outline: none;
-      cursor: pointer;
     }
 
-    select:focus {
+    select:focus, input[type="password"]:focus {
       border-color: #000000;
     }
 
-    /* BUTTONS */
     .btn {
       width: 100%;
-      padding: 1rem 1.5rem;
+      padding: 0.9rem 1.5rem;
       background: #000000;
       color: #ffffff;
       border: 1px solid #000000;
@@ -300,13 +266,7 @@
       font-family: inherit;
       font-weight: 700;
       font-size: 0.9rem;
-      letter-spacing: 0.5px;
       cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .btn:hover {
-      background: #333333;
     }
 
     .btn:disabled {
@@ -326,81 +286,120 @@
       text-align: center;
     }
 
-    .btn-download:hover {
-      background: #000000;
-      color: #ffffff;
+    .error-msg, .file-info {
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      display: none;
     }
 
-    /* ERROR & FILE INFO */
-    .error-msg {
+    .error-msg { border: 1px solid #000000; color: #000000; }
+    .file-info { background: #fafafa; border: 1px solid #e5e5e5; }
+
+    .progress-wrapper { margin-top: 1.25rem; display: none; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: #666; margin-bottom: 0.4rem; }
+    .progress-bar-bg { width: 100%; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; width: 0%; background: #000000; transition: width 0.2s ease; }
+
+    /* MODAL POPUP PREM / PRICING & VERIFIKASI */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-card {
       background: #ffffff;
-      border: 1px solid #000000;
-      color: #000000;
-      padding: 0.85rem 1rem;
-      border-radius: 6px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      display: none;
-    }
-
-    .file-info {
-      background: #fafafa;
-      padding: 0.85rem 1rem;
-      border-radius: 6px;
-      border: 1px solid #e5e5e5;
-      color: #121212;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 1.5rem;
-      display: none;
-      word-break: break-all;
-    }
-
-    /* PROGRESS BAR */
-    .progress-wrapper {
-      margin-top: 1.5rem;
-      display: none;
-    }
-
-    .progress-info {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #666666;
-      margin-bottom: 0.5rem;
-    }
-
-    .progress-bar-bg {
+      border-radius: 12px;
+      max-width: 850px;
       width: 100%;
-      height: 8px;
-      background: #e5e5e5;
-      border-radius: 4px;
-      overflow: hidden;
+      padding: 2rem 1.5rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
-    .progress-bar-fill {
-      height: 100%;
-      width: 0%;
-      background: #000000;
-      border-radius: 4px;
-      transition: width 0.2s ease;
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1.25rem;
+      font-size: 1.5rem; font-weight: 700;
+      cursor: pointer; border: none; background: transparent;
     }
 
-    /* FOOTER */
+    .modal-title { text-align: center; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .modal-subtitle { text-align: center; color: #666666; font-size: 0.88rem; margin-bottom: 1.5rem; }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .plan-card {
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .plan-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .plan-limit { font-size: 0.85rem; font-weight: 700; color: #333333; margin-bottom: 0.8rem; }
+    .plan-desc { font-size: 0.78rem; color: #666666; line-height: 1.4; margin-bottom: 1.25rem; }
+
+    /* TAMPILAN PASSWORD & SUKSES */
+    .password-view, .success-view {
+      display: none;
+      max-width: 400px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .alert-error {
+      color: #d9534f;
+      background: #fdf7f7;
+      border: 1px solid #d9534f;
+      padding: 0.65rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .green-check-icon {
+      width: 64px;
+      height: 64px;
+      background: #28a745;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin: 0 auto 1rem auto;
+      font-weight: 800;
+    }
+
     footer {
       text-align: center;
-      padding: 2rem 5%;
+      padding: 1.5rem 5%;
       color: #888888;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       border-top: 1px solid #e5e5e5;
-      font-weight: 500;
       background: #ffffff;
     }
 
     @media (max-width: 600px) {
-      .hero h1 { font-size: 1.8rem; }
       .converter-select-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -409,15 +408,18 @@
 
   <header>
     <a class="brand" onclick="navigateTo('/')">LoveYour<span>File</span></a>
-    <nav class="nav-links">
-      <a class="nav-link" onclick="navigateTo('/kompres-file')">Kompres File</a>
+    <div class="nav-links">
+      <a class="nav-link" onclick="navigateTo('/')">Home</a>
+      <a class="nav-link" onclick="navigateTo('/kompres-file')">Kompres</a>
       <a class="nav-link" onclick="navigateTo('/ubah-format')">Ubah Format</a>
-    </nav>
+      <span class="usage-badge" id="usageDisplay">0 / 10</span>
+      <button class="btn-premium-nav" id="premiumBtnNav" onclick="navigateTo('/mulai-jadi-premium')">Mulai jadi Premium</button>
+    </div>
   </header>
 
   <div class="hero" id="heroSection">
-    <h1>Semua Alat yang Anda Butuhkan untuk Mengelola File di Satu Tempat</h1>
-    <p>Kompresi ukuran file dan ubah format dokumen atau media Anda secara instan. 100% praktis, cepat, dan mudah digunakan.</p>
+    <h1>Semua Alat Pengelola File di Satu Tempat</h1>
+    <p>Kompresi & konversi dokumen atau media secara instan. 100% cepat dan tanpa ribet.</p>
     
     <div class="filter-container">
       <button class="filter-btn active" onclick="filterTools('all', this)">Semua Alat</button>
@@ -428,12 +430,11 @@
 
   <main>
     <div class="tools-grid" id="toolsGrid">
-      
       <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
         <div>
           <div class="tool-icon">📁</div>
           <h3>Kompres File</h3>
-          <p>Kecilkan ukuran file dokumen atau gambar tanpa merusak kualitas utama file Anda.</p>
+          <p>Kecilkan ukuran file tanpa mengorbankan kualitas file utama Anda.</p>
         </div>
       </div>
 
@@ -441,36 +442,30 @@
         <div>
           <div class="tool-icon">🔄</div>
           <h3>Ubah Format File</h3>
-          <p>Pilih format awal dan format tujuan secara manual dari seluruh jenis file (Gambar, Dokumen, Audio, Video).</p>
+          <p>Ubah format dokumen, gambar, audio, atau video sesuai kebutuhan.</p>
         </div>
       </div>
-
     </div>
 
     <div class="workspace" id="workspaceArea">
       <div class="workspace-header">
-        <button class="btn-back" onclick="navigateTo('/')">← Kembali ke Semua Alat</button>
-        <h2 id="workspaceTitle" style="font-size: 1.25rem; font-weight: 800;">Judul Alat</h2>
+        <button class="btn-back" onclick="navigateTo('/')">← Kembali ke Home</button>
+        <h2 id="workspaceTitle" style="font-size: 1.15rem; font-weight: 800;">Judul Alat</h2>
       </div>
 
       <div id="compressTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="compressError"></div>
         <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
-          <div class="drop-icon">📁</div>
-          <p>Klik atau seret file ke area ini</p>
-          <span>Semua format diperbolehkan (Kecuali .exe)</span>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+          <p style="font-weight: 700;">Klik atau seret file ke sini</p>
+          <span style="font-size: 0.8rem; color: #777;">Format .exe tidak didukung</span>
         </div>
         <input type="file" id="compressInput" onchange="handleFileSelect(this, 'compress')">
         <div class="file-info" id="compressFileInfo"></div>
         <button class="btn" id="compressBtn" onclick="startProcess('compress')" disabled>Mulai Kompresi</button>
         <div class="progress-wrapper" id="compressProgressWrapper">
-          <div class="progress-info">
-            <span>Memproses...</span>
-            <span id="compressPercent">0%</span>
-          </div>
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="compressBar"></div>
-          </div>
+          <div class="progress-info"><span>Memproses...</span><span id="compressPercent">0%</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="compressBar"></div></div>
         </div>
         <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
       </div>
@@ -478,9 +473,9 @@
       <div id="convertTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="convertError"></div>
         <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
-          <div class="drop-icon">📄</div>
-          <p>Klik atau seret file ke area ini</p>
-          <span>Pilih file yang ingin diubah formatnya</span>
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📄</div>
+          <p style="font-weight: 700;">Klik atau seret file ke sini</p>
+          <span style="font-size: 0.8rem; color: #777;">Pilih file yang akan diubah</span>
         </div>
         <input type="file" id="convertInput" onchange="handleFileSelect(this, 'convert')">
         <div class="file-info" id="convertFileInfo"></div>
@@ -494,98 +489,104 @@
                 <option value="jpg">JPG / JPEG</option>
                 <option value="png">PNG</option>
                 <option value="webp">WEBP</option>
-                <option value="avif">AVIF</option>
-                <option value="gif">GIF</option>
-                <option value="bmp">BMP</option>
-                <option value="svg">SVG</option>
-                <option value="ico">ICO</option>
-                <option value="tiff">TIFF</option>
               </optgroup>
               <optgroup label="Dokumen">
                 <option value="pdf">PDF</option>
-                <option value="docx">DOCX (Word)</option>
-                <option value="doc">DOC (Word Lama)</option>
-                <option value="xlsx">XLSX (Excel)</option>
-                <option value="pptx">PPTX (PowerPoint)</option>
-                <option value="txt">TXT (Teks Polos)</option>
-                <option value="epub">EPUB (E-Book)</option>
-              </optgroup>
-              <optgroup label="Audio">
-                <option value="mp3">MP3</option>
-                <option value="wav">WAV</option>
-                <option value="flac">FLAC</option>
-                <option value="ogg">OGG</option>
-              </optgroup>
-              <optgroup label="Video">
-                <option value="mp4">MP4</option>
-                <option value="mkv">MKV</option>
-                <option value="avi">AVI</option>
-                <option value="webm">WEBM</option>
-              </optgroup>
-              <optgroup label="Arsip">
-                <option value="zip">ZIP</option>
-                <option value="rar">RAR</option>
-                <option value="7z">7Z</option>
+                <option value="docx">DOCX</option>
+                <option value="xlsx">XLSX</option>
               </optgroup>
             </select>
           </div>
-
           <div class="form-group">
             <label for="formatTarget">Format Tujuan</label>
             <select id="formatTarget">
               <optgroup label="Gambar">
                 <option value="png">PNG</option>
-                <option value="jpg">JPG / JPEG</option>
+                <option value="jpg">JPG</option>
                 <option value="webp">WEBP</option>
-                <option value="avif">AVIF</option>
-                <option value="gif">GIF</option>
-                <option value="bmp">BMP</option>
-                <option value="svg">SVG</option>
               </optgroup>
               <optgroup label="Dokumen">
                 <option value="pdf">PDF</option>
-                <option value="docx">DOCX (Word)</option>
-                <option value="xlsx">XLSX (Excel)</option>
-                <option value="pptx">PPTX (PowerPoint)</option>
-                <option value="txt">TXT (Teks Polos)</option>
-              </optgroup>
-              <optgroup label="Audio">
-                <option value="mp3">MP3</option>
-                <option value="wav">WAV</option>
-                <option value="flac">FLAC</option>
-                <option value="ogg">OGG</option>
-              </optgroup>
-              <optgroup label="Video">
-                <option value="mp4">MP4</option>
-                <option value="mkv">MKV</option>
-                <option value="avi">AVI</option>
-                <option value="webm">WEBM</option>
-              </optgroup>
-              <optgroup label="Arsip">
-                <option value="zip">ZIP</option>
-                <option value="7z">7Z</option>
+                <option value="docx">DOCX</option>
               </optgroup>
             </select>
           </div>
         </div>
 
         <button class="btn" id="convertBtn" onclick="startProcess('convert')" disabled>Ubah Format</button>
-
         <div class="progress-wrapper" id="convertProgressWrapper">
-          <div class="progress-info">
-            <span>Mengonversi...</span>
-            <span id="convertPercent">0%</span>
+          <div class="progress-info"><span>Mengonversi...</span><span id="convertPercent">0%</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="convertBar"></div></div>
+        </div>
+        <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
+      </div>
+    </div>
+  </main>
+
+  <div class="modal-overlay" id="subscriptionModal">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      
+      <div id="modalSelectStep">
+        <h2 class="modal-title">Pilih Paket Langganan</h2>
+        <p class="modal-subtitle">Tingkatkan batas pemakaian harian untuk akses lebih cepat dan luas.</p>
+        
+        <div class="plans-grid">
+          <div class="plan-card">
+            <div>
+              <div class="plan-name">Pro</div>
+              <div class="plan-limit">1.000 kali / hari</div>
+              <div class="plan-desc">Sangat pas untuk pemakaian rutin dokumen harian.</div>
+            </div>
+            <button class="btn" onclick="navigateTo('/mulai-jadi-premium/pro')">Pilih Pro</button>
           </div>
-          <div class="progress-bar-bg">
-            <div class="progress-bar-fill" id="convertBar"></div>
+
+          <div class="plan-card" style="border-color: #000000;">
+            <div>
+              <div class="plan-name">Premium</div>
+              <div class="plan-limit">10.000 kali / hari</div>
+              <div class="plan-desc">Cocok untuk pengerjaan profesional skala besar.</div>
+            </div>
+            <button class="btn" onclick="navigateTo('/mulai-jadi-premium/premium')">Pilih Premium</button>
+          </div>
+
+          <div class="plan-card">
+            <div>
+              <div class="plan-name">Platinum</div>
+              <div class="plan-limit">Tiada Batas</div>
+              <div class="plan-desc">Akses tak terbatas tanpa batasan harian.</div>
+            </div>
+            <button class="btn" onclick="navigateTo('/mulai-jadi-premium/platinum')">Pilih Platinum</button>
           </div>
         </div>
+      </div>
 
-        <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
+      <div id="modalPasswordStep" class="password-view">
+        <h2 class="modal-title" id="passViewTitle">Verifikasi Paket</h2>
+        <p class="modal-subtitle">Masukkan kata sandi untuk mengaktifkan paket ini.</p>
+        
+        <div class="alert-error" id="passwordError">Sandi yang kamu masukkan salah</div>
+        
+        <div class="form-group" style="text-align: left;">
+          <label for="planPasswordInput">Kata Sandi Paket</label>
+          <input type="password" id="planPasswordInput" placeholder="Masukkan 4 digit sandi">
+        </div>
+
+        <button class="btn" onclick="verifyPassword()" style="margin-bottom: 0.75rem;">Konfirmasi Sandi</button>
+        <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
+      </div>
+
+      <div id="modalSuccessStep" class="success-view">
+        <div class="green-check-icon">✓</div>
+        <h2 class="modal-title" style="margin-bottom: 0.5rem;">Berhasil Ditambahkan!</h2>
+        <p class="modal-subtitle" id="successMessageText" style="font-weight: 700; color: #000000; font-size: 1rem; margin-bottom: 1.5rem;">
+          kamu sekarang sudah jadi pro
+        </p>
+        <button class="btn" onclick="closeModal()">Selesai & Mulai Menggunakan</button>
       </div>
 
     </div>
-  </main>
+  </div>
 
   <footer>
     <p>&copy; 2026 LoveYourFile. All rights reserved.</p>
@@ -593,57 +594,149 @@
 
   <script>
     let selectedFiles = { compress: null, convert: null };
+    let currentTargetPlan = null;
 
-    // SYSTEM NAVIGASI URL (SPA ROUTING)
+    const PASSWORDS = {
+      'pro': '3400',
+      'premium': '3418',
+      'platinum': '7238'
+    };
+
+    const LIMITS = {
+      'Pro': 1000,
+      'Premium': 10000,
+      'Platinum': Infinity
+    };
+
+    // PERHITUNGAN LIMIT HARIAN
+    const TODAY = new Date().toISOString().slice(0, 10);
+    let userPlan = localStorage.getItem('lyf_plan') || 'Free';
+    let maxLimit = userPlan === 'Pro' ? 1000 : userPlan === 'Premium' ? 10000 : userPlan === 'Platinum' ? Infinity : 10;
+    
+    let savedDate = localStorage.getItem('lyf_date');
+    let usageCount = parseInt(localStorage.getItem('lyf_usage') || '0', 10);
+
+    if (savedDate !== TODAY) {
+      localStorage.setItem('lyf_date', TODAY);
+      localStorage.setItem('lyf_usage', '0');
+      usageCount = 0;
+    }
+
+    function updateUsageUI() {
+      const display = document.getElementById('usageDisplay');
+      const btnNav = document.getElementById('premiumBtnNav');
+      
+      const limitText = maxLimit === Infinity ? "∞" : maxLimit;
+      display.innerText = `${usageCount} / ${limitText} (${userPlan})`;
+
+      if (userPlan !== 'Free') {
+        btnNav.innerText = "Ubah Langganan";
+      } else {
+        btnNav.innerText = "Mulai jadi Premium";
+      }
+    }
+
     function navigateTo(path) {
       history.pushState(null, '', path);
       renderPage(path);
     }
 
-    // MEMPROSES TAMPILAN BERDASARKAN URL ALAMAT WEB
     function renderPage(path) {
       const hero = document.getElementById('heroSection');
       const grid = document.getElementById('toolsGrid');
       const workspace = document.getElementById('workspaceArea');
+      const modal = document.getElementById('subscriptionModal');
+
+      const selectStep = document.getElementById('modalSelectStep');
+      const passwordStep = document.getElementById('modalPasswordStep');
+      const successStep = document.getElementById('modalSuccessStep');
 
       document.querySelectorAll('.tool-view').forEach(view => view.style.display = 'none');
 
+      // RESET MODAL STEPS
+      selectStep.style.display = 'none';
+      passwordStep.style.display = 'none';
+      successStep.style.display = 'none';
+
       if (path === '/kompres-file') {
+        modal.style.display = 'none';
         hero.style.display = 'none';
         grid.style.display = 'none';
         workspace.style.display = 'block';
         document.getElementById('workspaceTitle').innerText = 'Kompres File';
         document.getElementById('compressTool').style.display = 'block';
       } else if (path === '/ubah-format') {
+        modal.style.display = 'none';
         hero.style.display = 'none';
         grid.style.display = 'none';
         workspace.style.display = 'block';
         document.getElementById('workspaceTitle').innerText = 'Pengubah Format File';
         document.getElementById('convertTool').style.display = 'block';
+      } else if (path === '/mulai-jadi-premium') {
+        modal.style.display = 'flex';
+        selectStep.style.display = 'block';
+      } else if (path.startsWith('/mulai-jadi-premium/')) {
+        const planSlug = path.split('/mulai-jadi-premium/')[1].toLowerCase();
+        if (['pro', 'premium', 'platinum'].includes(planSlug)) {
+          currentTargetPlan = planSlug;
+          modal.style.display = 'flex';
+          passwordStep.style.display = 'block';
+          
+          document.getElementById('passViewTitle').innerText = `Aktivasi Paket ${planSlug.toUpperCase()}`;
+          document.getElementById('planPasswordInput').value = '';
+          document.getElementById('passwordError').style.display = 'none';
+        } else {
+          navigateTo('/mulai-jadi-premium');
+        }
       } else {
-        // Tampilan Beranda Default (/)
+        // Path Normal / Home
+        modal.style.display = 'none';
         hero.style.display = 'block';
         grid.style.display = 'grid';
         workspace.style.display = 'none';
       }
     }
 
-    // MENDUKUNG TOMBOL BACK & FORWARD BROWSER
-    window.addEventListener('popstate', () => {
-      renderPage(window.location.pathname);
-    });
+    function verifyPassword() {
+      const inputPass = document.getElementById('planPasswordInput').value.trim();
+      const errorBox = document.getElementById('passwordError');
+      const correctPass = PASSWORDS[currentTargetPlan];
 
-    // DETEKSI PATH AWAL SAAT WEB PERTAMA KALI DIBUKA
+      if (inputPass === correctPass) {
+        errorBox.style.display = 'none';
+        
+        // Simpan Paket
+        const formattedPlanName = currentTargetPlan.charAt(0).toUpperCase() + currentTargetPlan.slice(1);
+        userPlan = formattedPlanName;
+        maxLimit = LIMITS[formattedPlanName];
+        localStorage.setItem('lyf_plan', formattedPlanName);
+        updateUsageUI();
+
+        // Tampilkan Sukses
+        document.getElementById('modalPasswordStep').style.display = 'none';
+        document.getElementById('successMessageText').innerText = `kamu sekarang sudah jadi ${currentTargetPlan}`;
+        document.getElementById('modalSuccessStep').style.display = 'block';
+      } else {
+        errorBox.style.display = 'block';
+        errorBox.innerText = "Sandi yang kamu masukkan salah";
+      }
+    }
+
+    function closeModal() {
+      navigateTo('/');
+    }
+
+    window.addEventListener('popstate', () => renderPage(window.location.pathname));
     window.addEventListener('DOMContentLoaded', () => {
       renderPage(window.location.pathname);
+      updateUsageUI();
     });
 
     function filterTools(category, btnElement) {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
       btnElement.classList.add('active');
 
-      const cards = document.querySelectorAll('.tool-card');
-      cards.forEach(card => {
+      document.querySelectorAll('.tool-card').forEach(card => {
         if (category === 'all' || card.dataset.category === category) {
           card.style.display = 'flex';
         } else {
@@ -667,9 +760,8 @@
       if (!file) return;
 
       const fileExtension = file.name.split('.').pop().toLowerCase();
-
       if (fileExtension === 'exe') {
-        errorEl.innerText = "⚠️ Format file .exe tidak didukung demi keamanan.";
+        errorEl.innerText = "⚠️ Format .exe tidak didukung.";
         errorEl.style.display = 'block';
         input.value = '';
         selectedFiles[type] = null;
@@ -677,18 +769,17 @@
       }
 
       selectedFiles[type] = file;
-      infoEl.innerText = `📄 File Terpilih: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      infoEl.innerText = `📄 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
       infoEl.style.display = 'block';
       btnEl.disabled = false;
-
-      if (type === 'convert') {
-        const formatSource = document.getElementById('formatSource');
-        const matchOption = Array.from(formatSource.options).find(opt => opt.value === fileExtension);
-        formatSource.value = matchOption ? fileExtension : 'auto';
-      }
     }
 
     function startProcess(type) {
+      if (usageCount >= maxLimit) {
+        navigateTo('/mulai-jadi-premium');
+        return;
+      }
+
       const file = selectedFiles[type];
       if (!file) return;
 
@@ -712,6 +803,10 @@
           clearInterval(interval);
 
           setTimeout(() => {
+            usageCount++;
+            localStorage.setItem('lyf_usage', usageCount.toString());
+            updateUsageUI();
+
             const blob = new Blob([file], { type: file.type });
             const url = URL.createObjectURL(blob);
             
