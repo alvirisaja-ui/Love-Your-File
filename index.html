@@ -580,46 +580,47 @@
     let currentTargetPlan = null;
 
     // ==========================================
-    // DYNAMIC MULTI-EASTER EGG ENGINE
+    // EXCLUSIVE SINGLE EASTER EGG PER DEVICE
     // ==========================================
-    const REWARDS = ["Pro", "Premium", "Platinum", "Pro", "Pro"];
+    const POSSIBLE_REWARDS = ["Pro", "Pro", "Pro", "Premium", "Platinum"];
     const POSSIBLE_TRIGGERS = [
       "logo_click_5",
       "footer_dblclick",
       "same_format_select",
       "secret_filename",
-      "typing_secret",
-      "secret_url",
-      "back_click_3"
+      "typing_secret"
     ];
 
-    // Inisialisasi lokasi Easter Egg khusus untuk perangkat ini
-    function initDeviceEasterEggs() {
-      let savedMapping = localStorage.getItem('lyf_ee_mapping');
-      if (!savedMapping) {
-        // Acak pemicu untuk 5 Hadiah
-        let shuffledTriggers = [...POSSIBLE_TRIGGERS].sort(() => 0.5 - Math.random());
-        let mapping = {};
-        REWARDS.forEach((reward, idx) => {
-          mapping[shuffledTriggers[idx]] = { reward: reward, claimed: false };
-        });
-        localStorage.setItem('lyf_ee_mapping', JSON.stringify(mapping));
-        return mapping;
+    function initExclusiveDeviceEE() {
+      let savedEE = localStorage.getItem('lyf_exclusive_ee');
+      if (!savedEE) {
+        // Pilih HANYA 1 trigger dan 1 reward acak untuk perangkat ini
+        const randomTriggerIndex = Math.floor(Math.random() * POSSIBLE_TRIGGERS.length);
+        const randomRewardIndex = Math.floor(Math.random() * POSSIBLE_REWARDS.length);
+        
+        const deviceEE = {
+          trigger: POSSIBLE_TRIGGERS[randomTriggerIndex],
+          reward: POSSIBLE_REWARDS[randomRewardIndex],
+          claimed: false
+        };
+
+        localStorage.setItem('lyf_exclusive_ee', JSON.stringify(deviceEE));
+        return deviceEE;
       }
-      return JSON.parse(savedMapping);
+      return JSON.parse(savedEE);
     }
 
-    let eeMapping = initDeviceEasterEggs();
+    let activeEE = initExclusiveDeviceEE();
 
     function triggerEasterEgg(triggerName) {
-      if (eeMapping[triggerName] && !eeMapping[triggerName].claimed) {
-        eeMapping[triggerName].claimed = true;
-        localStorage.setItem('lyf_ee_mapping', JSON.stringify(eeMapping));
+      // PERIKSA: Hanya jalankan jika pemicunya SAMA dengan rahasia khusus perangkat ini
+      if (activeEE.trigger === triggerName && !activeEE.claimed) {
+        activeEE.claimed = true;
+        localStorage.setItem('lyf_exclusive_ee', JSON.stringify(activeEE));
 
-        const rewardPlan = eeMapping[triggerName].reward;
+        const rewardPlan = activeEE.reward;
         applyPlanUpgrade(rewardPlan);
 
-        // Tampilkan Modal Berhasil Unlocked
         const modal = document.getElementById('subscriptionModal');
         const selectStep = document.getElementById('modalSelectStep');
         const passwordStep = document.getElementById('modalPasswordStep');
@@ -629,14 +630,14 @@
         passwordStep.style.display = 'none';
         successStep.style.display = 'block';
 
-        document.getElementById('successTitleText').innerText = "🎉 Easter Egg Terbuka!";
-        document.getElementById('successMessageText').innerText = `Selamat! Kamu menemukan Rahasia Tersembunyi dan mendapatkan akses ${rewardPlan.toUpperCase()}!`;
+        document.getElementById('successTitleText').innerText = "🎉 Easter Egg Perangkat Ini Ditemukan!";
+        document.getElementById('successMessageText').innerText = `Selamat! Kamu menemukan lokasi rahasia perangkatmu dan membuka akses ${rewardPlan.toUpperCase()}!`;
         modal.style.display = 'flex';
       }
     }
 
-    // --- TRIGGERS ---
-    // 1. Logo Click 5x
+    // --- POSISI DENGAN PENGUNCIAN KETAT ---
+    // 1. Klik Logo 5 Kali
     let logoClickCount = 0;
     let logoClickTimer = null;
     function handleLogoClick() {
@@ -665,7 +666,7 @@
       }
     }
 
-    // 4. Filename berakhiran _secret
+    // 4. Filename mengandung '_secret'
     function checkFilenameTrigger(filename) {
       if (filename.toLowerCase().includes('_secret')) {
         triggerEasterEgg('secret_filename');
@@ -683,19 +684,8 @@
       }
     });
 
-    // 6. Tombol Kembali ke Home 3 Kali
-    let backClickCount = 0;
-    let backTimer = null;
     function handleBackClick() {
-      backClickCount++;
-      clearTimeout(backTimer);
-      backTimer = setTimeout(() => { backClickCount = 0; }, 2000);
-      if (backClickCount === 3) {
-        backClickCount = 0;
-        triggerEasterEgg('back_click_3');
-      } else {
-        navigateTo('/');
-      }
+      navigateTo('/');
     }
 
     // ==========================================
@@ -753,11 +743,6 @@
       passwordStep.style.display = 'none';
       successStep.style.display = 'none';
       modal.style.display = 'none';
-
-      if (path === '/secret-room') {
-        triggerEasterEgg('secret_url');
-        path = '/';
-      }
 
       if (path === '/kompres-file') {
         hero.style.display = 'none';
