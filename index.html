@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoveYourFile - Solusi Lengkap Kompres & Konversi File</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* RESET & BASE MONOKROM */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #fafafa;
+      color: #121212;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* NAVBAR */
+    header {
+      padding: 1.25rem 5%;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #000000;
+      text-decoration: none;
+      letter-spacing: -1px;
+      cursor: pointer;
+    }
+
+    .brand span {
+      font-weight: 400;
+      color: #666666;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: #444444;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-link:hover {
+      color: #000000;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      text-align: center;
+      padding: 4rem 1rem 2.5rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #000000;
+      letter-spacing: -1px;
+      line-height: 1.25;
+      margin-bottom: 1rem;
+    }
+
+    .hero p {
+      font-size: 1.05rem;
+      color: #666666;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    /* TOOL FILTER BUTTONS */
+    .filter-container {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem auto 3rem auto;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.6rem 1.4rem;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      color: #555555;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: #000000;
+      color: #ffffff;
+      border-color: #000000;
+    }
+
+    /* MAIN CONTENT AREA */
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 90%;
+      margin: 0 auto 4rem auto;
+    }
+
+    /* FEATURE GRID */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-card {
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 2rem;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+      border-color: #000000;
+    }
+
+    .tool-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .tool-card h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #000000;
+      margin-bottom: 0.6rem;
+    }
+
+    .tool-card p {
+      font-size: 0.88rem;
+      color: #666666;
+      line-height: 1.5;
+    }
+
+    /* WORKSPACE CONTAINER */
+    .workspace {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .workspace-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .btn-back {
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #666666;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-back:hover {
+      color: #000000;
+    }
+
+    /* DRAG & DROP AREA */
+    .drop-zone {
+      border: 2px dashed #cccccc;
+      border-radius: 8px;
+      padding: 3.5rem 1.5rem;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      margin-bottom: 1.5rem;
+    }
+
+    .drop-zone:hover, .drop-zone.dragover {
+      border-color: #000000;
+      background: #f0f0f0;
+    }
+
+    .drop-icon {
+      font-size: 2.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .drop-zone p {
+      color: #121212;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .drop-zone span {
+      color: #777777;
+      font-size: 0.8rem;
+      display: block;
+      margin-top: 0.4rem;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    /* FORMS & DUAL SELECT */
+    .converter-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #121212;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    select {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: #ffffff;
+      border: 1px solid #cccccc;
+      border-radius: 6px;
+      color: #121212;
+      font-family: inherit;
+      font-size: 0.95rem;
+      font-weight: 500;
+      outline: none;
+      cursor: pointer;
+    }
+
+    select:focus {
+      border-color: #000000;
+    }
+
+    /* BUTTONS */
+    .btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid #000000;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #333333;
+    }
+
+    .btn:disabled {
+      background: #e5e5e5;
+      border-color: #e5e5e5;
+      color: #999999;
+      cursor: not-allowed;
+    }
+
+    .btn-download {
+      background: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      margin-top: 1rem;
+      display: none;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .btn-download:hover {
+      background: #000000;
+      color: #ffffff;
+    }
+
+    /* ERROR & FILE INFO */
+    .error-msg {
+      background: #ffffff;
+      border: 1px solid #000000;
+      color: #000000;
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .file-info {
+      background: #fafafa;
+      padding: 0.85rem 1rem;
+      border-radius: 6px;
+      border: 1px solid #e5e5e5;
+      color: #121212;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      display: none;
+      word-break: break-all;
+    }
+
+    /* PROGRESS BAR */
+    .progress-wrapper {
+      margin-top: 1.5rem;
+      display: none;
+    }
+
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #666666;
+      margin-bottom: 0.5rem;
+    }
+
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: #e5e5e5;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: #000000;
+      border-radius: 4px;
+      transition: width 0.2s ease;
+    }
+
+    /* FOOTER */
+    footer {
+      text-align: center;
+      padding: 2rem 5%;
+      color: #888888;
+      font-size: 0.85rem;
+      border-top: 1px solid #e5e5e5;
+      font-weight: 500;
+      background: #ffffff;
+    }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      .converter-select-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="brand" onclick="navigateTo('/')">LoveYour<span>File</span></a>
+    <nav class="nav-links">
+      <a class="nav-link" onclick="navigateTo('/kompres-file')">Kompres File</a>
+      <a class="nav-link" onclick="navigateTo('/ubah-format')">Ubah Format</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="heroSection">
+    <h1>Semua Alat yang Anda Butuhkan untuk Mengelola File di Satu Tempat</h1>
+    <p>Kompresi ukuran file dan ubah format dokumen atau media Anda secara instan. 100% praktis, cepat, dan mudah digunakan.</p>
+    
+    <div class="filter-container">
+      <button class="filter-btn active" onclick="filterTools('all', this)">Semua Alat</button>
+      <button class="filter-btn" onclick="filterTools('compress', this)">Kompresi</button>
+      <button class="filter-btn" onclick="filterTools('convert', this)">Konversi Format</button>
+    </div>
+  </div>
+
+  <main>
+    <div class="tools-grid" id="toolsGrid">
+      
+      <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
+        <div>
+          <div class="tool-icon">📁</div>
+          <h3>Kompres File</h3>
+          <p>Kecilkan ukuran file dokumen atau gambar tanpa merusak kualitas utama file Anda.</p>
+        </div>
+      </div>
+
+      <div class="tool-card" data-category="convert" onclick="navigateTo('/ubah-format')">
+        <div>
+          <div class="tool-icon">🔄</div>
+          <h3>Ubah Format File</h3>
+          <p>Pilih format awal dan format tujuan secara manual dari seluruh jenis file (Gambar, Dokumen, Audio, Video).</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="workspace" id="workspaceArea">
+      <div class="workspace-header">
+        <button class="btn-back" onclick="navigateTo('/')">← Kembali ke Semua Alat</button>
+        <h2 id="workspaceTitle" style="font-size: 1.25rem; font-weight: 800;">Judul Alat</h2>
+      </div>
+
+      <div id="compressTool" class="tool-view" style="display: none;">
+        <div class="error-msg" id="compressError"></div>
+        <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
+          <div class="drop-icon">📁</div>
+          <p>Klik atau seret file ke area ini</p>
+          <span>Semua format diperbolehkan (Kecuali .exe)</span>
+        </div>
+        <input type="file" id="compressInput" onchange="handleFileSelect(this, 'compress')">
+        <div class="file-info" id="compressFileInfo"></div>
+        <button class="btn" id="compressBtn" onclick="startProcess('compress')" disabled>Mulai Kompresi</button>
+        <div class="progress-wrapper" id="compressProgressWrapper">
+          <div class="progress-info">
+            <span>Memproses...</span>
+            <span id="compressPercent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="compressBar"></div>
+          </div>
+        </div>
+        <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
+      </div>
+
+      <div id="convertTool" class="tool-view" style="display: none;">
+        <div class="error-msg" id="convertError"></div>
+        <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
+          <div class="drop-icon">📄</div>
+          <p>Klik atau seret file ke area ini</p>
+          <span>Pilih file yang ingin diubah formatnya</span>
+        </div>
+        <input type="file" id="convertInput" onchange="handleFileSelect(this, 'convert')">
+        <div class="file-info" id="convertFileInfo"></div>
+
+        <div class="converter-select-grid">
+          <div class="form-group">
+            <label for="formatSource">Format Awal</label>
+            <select id="formatSource">
+              <option value="auto">Deteksi Otomatis</option>
+              <optgroup label="Gambar">
+                <option value="jpg">JPG / JPEG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WEBP</option>
+                <option value="avif">AVIF</option>
+                <option value="gif">GIF</option>
+                <option value="bmp">BMP</option>
+                <option value="svg">SVG</option>
+                <option value="ico">ICO</option>
+                <option value="tiff">TIFF</option>
+              </optgroup>
+              <optgroup label="Dokumen">
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX (Word)</option>
+                <option value="doc">DOC (Word Lama)</option>
+                <option value="xlsx">XLSX (Excel)</option>
+                <option value="pptx">PPTX (PowerPoint)</option>
+                <option value="txt">TXT (Teks Polos)</option>
+                <option value="epub">EPUB (E-Book)</option>
+              </optgroup>
+              <optgroup label="Audio">
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+                <option value="flac">FLAC</option>
+                <option value="ogg">OGG</option>
+              </optgroup>
+              <optgroup label="Video">
+                <option value="mp4">MP4</option>
+                <option value="mkv">MKV</option>
+                <option value="avi">AVI</option>
+                <option value="webm">WEBM</option>
+              </optgroup>
+              <optgroup label="Arsip">
+                <option value="zip">ZIP</option>
+                <option value="rar">RAR</option>
+                <option value="7z">7Z</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="formatTarget">Format Tujuan</label>
+            <select id="formatTarget">
+              <optgroup label="Gambar">
+                <option value="png">PNG</option>
+                <option value="jpg">JPG / JPEG</option>
+                <option value="webp">WEBP</option>
+                <option value="avif">AVIF</option>
+                <option value="gif">GIF</option>
+                <option value="bmp">BMP</option>
+                <option value="svg">SVG</option>
+              </optgroup>
+              <optgroup label="Dokumen">
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX (Word)</option>
+                <option value="xlsx">XLSX (Excel)</option>
+                <option value="pptx">PPTX (PowerPoint)</option>
+                <option value="txt">TXT (Teks Polos)</option>
+              </optgroup>
+              <optgroup label="Audio">
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+                <option value="flac">FLAC</option>
+                <option value="ogg">OGG</option>
+              </optgroup>
+              <optgroup label="Video">
+                <option value="mp4">MP4</option>
+                <option value="mkv">MKV</option>
+                <option value="avi">AVI</option>
+                <option value="webm">WEBM</option>
+              </optgroup>
+              <optgroup label="Arsip">
+                <option value="zip">ZIP</option>
+                <option value="7z">7Z</option>
+              </optgroup>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn" id="convertBtn" onclick="startProcess('convert')" disabled>Ubah Format</button>
+
+        <div class="progress-wrapper" id="convertProgressWrapper">
+          <div class="progress-info">
+            <span>Mengonversi...</span>
+            <span id="convertPercent">0%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="convertBar"></div>
+          </div>
+        </div>
+
+        <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 LoveYourFile. All rights reserved.</p>
+  </footer>
+
+  <script>
+    let selectedFiles = { compress: null, convert: null };
+
+    // SYSTEM NAVIGASI URL (SPA ROUTING)
+    function navigateTo(path) {
+      history.pushState(null, '', path);
+      renderPage(path);
+    }
+
+    // MEMPROSES TAMPILAN BERDASARKAN URL ALAMAT WEB
+    function renderPage(path) {
+      const hero = document.getElementById('heroSection');
+      const grid = document.getElementById('toolsGrid');
+      const workspace = document.getElementById('workspaceArea');
+
+      document.querySelectorAll('.tool-view').forEach(view => view.style.display = 'none');
+
+      if (path === '/kompres-file') {
+        hero.style.display = 'none';
+        grid.style.display = 'none';
+        workspace.style.display = 'block';
+        document.getElementById('workspaceTitle').innerText = 'Kompres File';
+        document.getElementById('compressTool').style.display = 'block';
+      } else if (path === '/ubah-format') {
+        hero.style.display = 'none';
+        grid.style.display = 'none';
+        workspace.style.display = 'block';
+        document.getElementById('workspaceTitle').innerText = 'Pengubah Format File';
+        document.getElementById('convertTool').style.display = 'block';
+      } else {
+        // Tampilan Beranda Default (/)
+        hero.style.display = 'block';
+        grid.style.display = 'grid';
+        workspace.style.display = 'none';
+      }
+    }
+
+    // MENDUKUNG TOMBOL BACK & FORWARD BROWSER
+    window.addEventListener('popstate', () => {
+      renderPage(window.location.pathname);
+    });
+
+    // DETEKSI PATH AWAL SAAT WEB PERTAMA KALI DIBUKA
+    window.addEventListener('DOMContentLoaded', () => {
+      renderPage(window.location.pathname);
+    });
+
+    function filterTools(category, btnElement) {
+      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      const cards = document.querySelectorAll('.tool-card');
+      cards.forEach(card => {
+        if (category === 'all' || card.dataset.category === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function handleFileSelect(input, type) {
+      const file = input.files[0];
+      const errorEl = document.getElementById(`${type}Error`);
+      const infoEl = document.getElementById(`${type}FileInfo`);
+      const btnEl = document.getElementById(`${type}Btn`);
+
+      errorEl.style.display = 'none';
+      infoEl.style.display = 'none';
+      btnEl.disabled = true;
+      document.getElementById(`${type}DownloadBtn`).style.display = 'none';
+      document.getElementById(`${type}ProgressWrapper`).style.display = 'none';
+
+      if (!file) return;
+
+      const fileExtension = file.name.split('.').pop().toLowerCase();
+
+      if (fileExtension === 'exe') {
+        errorEl.innerText = "⚠️ Format file .exe tidak didukung demi keamanan.";
+        errorEl.style.display = 'block';
+        input.value = '';
+        selectedFiles[type] = null;
+        return;
+      }
+
+      selectedFiles[type] = file;
+      infoEl.innerText = `📄 File Terpilih: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      infoEl.style.display = 'block';
+      btnEl.disabled = false;
+
+      if (type === 'convert') {
+        const formatSource = document.getElementById('formatSource');
+        const matchOption = Array.from(formatSource.options).find(opt => opt.value === fileExtension);
+        formatSource.value = matchOption ? fileExtension : 'auto';
+      }
+    }
+
+    function startProcess(type) {
+      const file = selectedFiles[type];
+      if (!file) return;
+
+      const btnEl = document.getElementById(`${type}Btn`);
+      const progressWrapper = document.getElementById(`${type}ProgressWrapper`);
+      const progressBar = document.getElementById(`${type}Bar`);
+      const progressPercent = document.getElementById(`${type}Percent`);
+      const downloadBtn = document.getElementById(`${type}DownloadBtn`);
+
+      btnEl.disabled = true;
+      progressWrapper.style.display = 'block';
+      progressBar.style.width = '0%';
+      progressPercent.innerText = '0%';
+
+      let progress = 0;
+      const interval = setInterval(() => {
+        progress += Math.floor(Math.random() * 15) + 10;
+        
+        if (progress >= 100) {
+          progress = 100;
+          clearInterval(interval);
+
+          setTimeout(() => {
+            const blob = new Blob([file], { type: file.type });
+            const url = URL.createObjectURL(blob);
+            
+            const baseName = file.name.substring(0, file.name.lastIndexOf('.'));
+            let outputName = "";
+
+            if (type === 'compress') {
+              const fileExt = file.name.split('.').pop();
+              outputName = `${baseName}_LoveYourFile_compressed.${fileExt}`;
+            } else {
+              const targetExt = document.getElementById('formatTarget').value;
+              outputName = `${baseName}_LoveYourFile_cvtd.${targetExt}`;
+            }
+
+            downloadBtn.href = url;
+            downloadBtn.download = outputName;
+            downloadBtn.style.display = 'block';
+            btnEl.disabled = false;
+          }, 400);
+        }
+
+        progressBar.style.width = `${progress}%`;
+        progressPercent.innerText = `${progress}%`;
+      }, 150);
+    }
+  </script>
+</body>
+</html>
