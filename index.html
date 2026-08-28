@@ -44,6 +44,13 @@
       text-decoration: none;
       letter-spacing: -1px;
       cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s ease;
+      display: inline-block;
+    }
+
+    .brand:active {
+      transform: scale(0.95);
     }
 
     .brand span { font-weight: 400; color: #666666; }
@@ -390,6 +397,20 @@
       font-weight: 800;
     }
 
+    /* MODAL EASTER EGG (SECRET PASSWORDS) */
+    .easter-egg-box {
+      background: #111111;
+      color: #ffffff;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-top: 1rem;
+      text-align: left;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    .easter-egg-box div { margin-bottom: 0.5rem; }
+    .easter-egg-box span { color: #00ff66; font-weight: bold; }
+
     footer {
       text-align: center;
       padding: 1.5rem 5%;
@@ -406,8 +427,9 @@
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <header>
-    <a class="brand" onclick="navigateTo('/')">LoveYour<span>File</span></a>
+    <a class="brand" id="brandLogo" onclick="handleLogoClick()">LoveYour<span>File</span></a>
     <div class="nav-links">
       <a class="nav-link" onclick="navigateTo('/')">Home</a>
       <a class="nav-link" onclick="navigateTo('/kompres-file')">Kompres</a>
@@ -417,6 +439,7 @@
     </div>
   </header>
 
+  <!-- HERO BANNER -->
   <div class="hero" id="heroSection">
     <h1>Semua Alat Pengelola File di Satu Tempat</h1>
     <p>Kompresi & konversi dokumen atau media secara instan. 100% cepat dan tanpa ribet.</p>
@@ -428,6 +451,7 @@
     </div>
   </div>
 
+  <!-- MAIN CONTAINER -->
   <main>
     <div class="tools-grid" id="toolsGrid">
       <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
@@ -447,12 +471,14 @@
       </div>
     </div>
 
+    <!-- WORKSPACE -->
     <div class="workspace" id="workspaceArea">
       <div class="workspace-header">
         <button class="btn-back" onclick="navigateTo('/')">← Kembali ke Home</button>
         <h2 id="workspaceTitle" style="font-size: 1.15rem; font-weight: 800;">Judul Alat</h2>
       </div>
 
+      <!-- TOOL: KOMPRES -->
       <div id="compressTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="compressError"></div>
         <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
@@ -470,6 +496,7 @@
         <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
       </div>
 
+      <!-- TOOL: CONVERT -->
       <div id="convertTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="convertError"></div>
         <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
@@ -523,10 +550,12 @@
     </div>
   </main>
 
+  <!-- MODAL LANGGANAN / PRICING -->
   <div class="modal-overlay" id="subscriptionModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
       
+      <!-- STEP 1: PILIH PAKET -->
       <div id="modalSelectStep">
         <h2 class="modal-title">Pilih Paket Langganan</h2>
         <p class="modal-subtitle">Tingkatkan batas pemakaian harian untuk akses lebih cepat dan luas.</p>
@@ -561,6 +590,7 @@
         </div>
       </div>
 
+      <!-- STEP 2: INPUT SANDI -->
       <div id="modalPasswordStep" class="password-view">
         <h2 class="modal-title" id="passViewTitle">Verifikasi Paket</h2>
         <p class="modal-subtitle">Masukkan kata sandi untuk mengaktifkan paket ini.</p>
@@ -576,6 +606,7 @@
         <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
       </div>
 
+      <!-- STEP 3: HASIL SUKSES (CENTANG HIJAU) -->
       <div id="modalSuccessStep" class="success-view">
         <div class="green-check-icon">✓</div>
         <h2 class="modal-title" style="margin-bottom: 0.5rem;">Berhasil Ditambahkan!</h2>
@@ -588,6 +619,24 @@
     </div>
   </div>
 
+  <!-- MODAL EASTER EGG (SECRET PASSWORDS UNLOCKED) -->
+  <div class="modal-overlay" id="easterEggModal">
+    <div class="modal-card" style="max-width: 480px; text-align: center;">
+      <button class="modal-close" onclick="closeEasterEgg()">&times;</button>
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉 Standard Secret Found!</div>
+      <h2 class="modal-title">Kamu Menemukan Easter Egg!</h2>
+      <p class="modal-subtitle">Kamu sangat niat dan teliti! Ini adalah kode sandi rahasia untuk membuka paket VIP:</p>
+
+      <div class="easter-egg-box">
+        <div>> KODE PRO: <span>3400</span></div>
+        <div>> KODE PREMIUM: <span>3418</span></div>
+        <div>> KODE PLATINUM: <span>7238</span></div>
+      </div>
+
+      <button class="btn" onclick="closeEasterEgg()" style="margin-top: 1.5rem;">Gunakan Kata Sandi</button>
+    </div>
+  </div>
+
   <footer>
     <p>&copy; 2026 LoveYourFile. All rights reserved.</p>
   </footer>
@@ -595,6 +644,31 @@
   <script>
     let selectedFiles = { compress: null, convert: null };
     let currentTargetPlan = null;
+
+    // SISTEM EASTER EGG (KLIK LOGO 5 KALI)
+    let logoClickCount = 0;
+    let logoClickTimer = null;
+
+    function handleLogoClick() {
+      logoClickCount++;
+      
+      clearTimeout(logoClickTimer);
+      logoClickTimer = setTimeout(() => {
+        logoClickCount = 0;
+      }, 3000); // Reset jika tidak diklik 5x dalam 3 detik
+
+      if (logoClickCount >= 5) {
+        logoClickCount = 0;
+        document.getElementById('easterEggModal').style.display = 'flex';
+      } else {
+        // Navigasi normal jika belum 5x klik
+        navigateTo('/');
+      }
+    }
+
+    function closeEasterEgg() {
+      document.getElementById('easterEggModal').style.display = 'none';
+    }
 
     const PASSWORDS = {
       'pro': '3400',
