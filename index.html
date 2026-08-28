@@ -91,6 +91,20 @@
 
     .btn-premium-nav:hover { background: #333333; }
 
+    .btn-admin-nav {
+      background: #f0f0f0;
+      color: #000000;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: 1px solid #cccccc;
+      transition: all 0.2s;
+    }
+
+    .btn-admin-nav:hover { background: #e0e0e0; }
+
     .hero {
       text-align: center;
       padding: 3rem 1rem 2rem 1rem;
@@ -234,7 +248,7 @@
     .form-group { margin-bottom: 1.25rem; }
     .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem; }
 
-    select, input[type="password"] {
+    select, input[type="password"], input[type="text"] {
       width: 100%;
       padding: 0.75rem 1rem;
       border: 1px solid #cccccc;
@@ -244,7 +258,7 @@
       outline: none;
     }
 
-    select:focus, input[type="password"]:focus { border-color: #000000; }
+    select:focus, input[type="password"]:focus, input[type="text"]:focus { border-color: #000000; }
 
     .btn {
       width: 100%;
@@ -293,6 +307,7 @@
     .progress-bar-bg { width: 100%; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
     .progress-bar-fill { height: 100%; width: 0%; background: #000000; transition: width 0.2s ease; }
 
+    /* MODAL STYLES */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -372,6 +387,31 @@
       font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
     }
 
+    /* ADMIN DASHBOARD STYLES */
+    .admin-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      padding: 1.25rem;
+      border-radius: 8px;
+    }
+
+    .stat-card h4 { font-size: 0.8rem; color: #666; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 1.4rem; font-weight: 800; color: #000; }
+
+    .admin-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
     footer {
       text-align: center;
       padding: 1.5rem 5%;
@@ -397,6 +437,7 @@
       <a class="nav-link" onclick="navigateTo('/ubah-format')">Ubah Format</a>
       <span class="usage-badge" id="usageDisplay">0 / 10</span>
       <button class="btn-premium-nav" id="premiumBtnNav" onclick="navigateTo('/mulai-jadi-premium')">Mulai jadi Premium</button>
+      <button class="btn-admin-nav" id="adminBtnNav" onclick="navigateTo('/admin-login')">Admin</button>
     </div>
   </header>
 
@@ -503,6 +544,66 @@
         </div>
         <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
       </div>
+
+      <div id="adminLoginTool" class="tool-view" style="display: none; max-width: 400px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: 0.5rem; font-weight: 800;">Login Admin</h2>
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 1.5rem;">Masuk ke sistem kontrol utama.</p>
+        
+        <div class="alert-error" id="adminLoginError">Username atau Password Admin Salah!</div>
+
+        <div class="form-group">
+          <label for="adminUsername">Username Admin</label>
+          <input type="text" id="adminUsername" placeholder="Masukkan username">
+        </div>
+        <div class="form-group">
+          <label for="adminPassword">Password Admin</label>
+          <input type="password" id="adminPassword" placeholder="Masukkan password">
+        </div>
+        <button class="btn" onclick="processAdminLogin()">Login ke Dashboard</button>
+      </div>
+
+      <div id="adminDashboardTool" class="tool-view" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-weight: 800;">Dashboard Admin</h2>
+          <button class="filter-btn" onclick="logoutAdmin()">Logout Admin</button>
+        </div>
+
+        <div class="admin-card-grid">
+          <div class="stat-card">
+            <h4>Paket Pengguna Saat Ini</h4>
+            <div class="value" id="admUserPlan">Free</div>
+          </div>
+          <div class="stat-card">
+            <h4>Total Pemakaian File</h4>
+            <div class="value" id="admUsageCount">0</div>
+          </div>
+          <div class="stat-card">
+            <h4>Easter Egg Terpilih</h4>
+            <div class="value" id="admEELocation" style="font-size: 1rem;">-</div>
+          </div>
+          <div class="stat-card">
+            <h4>Status Easter Egg</h4>
+            <div class="value" id="admEEStatus" style="font-size: 1.1rem;">-</div>
+          </div>
+        </div>
+
+        <h3 style="margin-bottom: 1rem; font-weight: 800;">Aksi Kontrol Admin</h3>
+        <div class="form-group" style="max-width: 300px;">
+          <label>Paksa Ganti Paket Perangkat Ini:</label>
+          <select id="admSetPlanSelect" onchange="adminChangePlan(this.value)">
+            <option value="Free">Free (10x/hari)</option>
+            <option value="Pro">Pro (1.000x/hari)</option>
+            <option value="Premium">Premium (10.000x/hari)</option>
+            <option value="Platinum">Platinum (Unlimited)</option>
+          </select>
+        </div>
+
+        <div class="admin-actions">
+          <button class="btn" style="width: auto; background: #28a745; border-color: #28a745;" onclick="adminResetUsage()">Reset Pemakaian Hari Ini</button>
+          <button class="btn" style="width: auto; background: #dc3545; border-color: #dc3545;" onclick="adminResetEE()">Reset & Acak Ulang Easter Egg</button>
+        </div>
+      </div>
+
     </div>
   </main>
 
@@ -578,6 +679,7 @@
   <script>
     let selectedFiles = { compress: null, convert: null };
     let currentTargetPlan = null;
+    let isAdminLoggedIn = false;
 
     // ==========================================
     // EXCLUSIVE SINGLE EASTER EGG PER DEVICE
@@ -591,10 +693,17 @@
       "typing_secret"
     ];
 
+    const TRIGGER_DESCRIPTIONS = {
+      "logo_click_5": "Klik Logo 5x",
+      "footer_dblclick": "Double Click Footer Text",
+      "same_format_select": "Pilih Format Awal = Format Tujuan",
+      "secret_filename": "Upload File berakhiran '_secret'",
+      "typing_secret": "Ketik Kata 'secret' di Keyboard"
+    };
+
     function initExclusiveDeviceEE() {
       let savedEE = localStorage.getItem('lyf_exclusive_ee');
       if (!savedEE) {
-        // Pilih HANYA 1 trigger dan 1 reward acak untuk perangkat ini
         const randomTriggerIndex = Math.floor(Math.random() * POSSIBLE_TRIGGERS.length);
         const randomRewardIndex = Math.floor(Math.random() * POSSIBLE_REWARDS.length);
         
@@ -613,7 +722,6 @@
     let activeEE = initExclusiveDeviceEE();
 
     function triggerEasterEgg(triggerName) {
-      // PERIKSA: Hanya jalankan jika pemicunya SAMA dengan rahasia khusus perangkat ini
       if (activeEE.trigger === triggerName && !activeEE.claimed) {
         activeEE.claimed = true;
         localStorage.setItem('lyf_exclusive_ee', JSON.stringify(activeEE));
@@ -636,8 +744,7 @@
       }
     }
 
-    // --- POSISI DENGAN PENGUNCIAN KETAT ---
-    // 1. Klik Logo 5 Kali
+    // TRIGGERS
     let logoClickCount = 0;
     let logoClickTimer = null;
     function handleLogoClick() {
@@ -652,12 +759,10 @@
       }
     }
 
-    // 2. Double Click Footer
     function handleFooterDblClick() {
       triggerEasterEgg('footer_dblclick');
     }
 
-    // 3. Format Asal = Format Tujuan
     function checkFormatTrigger() {
       const src = document.getElementById('formatSource').value;
       const tgt = document.getElementById('formatTarget').value;
@@ -666,14 +771,12 @@
       }
     }
 
-    // 4. Filename mengandung '_secret'
     function checkFilenameTrigger(filename) {
       if (filename.toLowerCase().includes('_secret')) {
         triggerEasterEgg('secret_filename');
       }
     }
 
-    // 5. Ketik 'secret' di Keyboard
     let typedKeys = "";
     window.addEventListener('keydown', (e) => {
       typedKeys += e.key.toLowerCase();
@@ -692,11 +795,11 @@
     // SYSTEM CORE & PLAN MANAGEMENT
     // ==========================================
     const PASSWORDS = { 'pro': '3400', 'premium': '3418', 'platinum': '7238' };
-    const LIMITS = { 'Pro': 1000, 'Premium': 10000, 'Platinum': Infinity };
+    const LIMITS = { 'Pro': 1000, 'Premium': 10000, 'Platinum': Infinity, 'Free': 10 };
 
     const TODAY = new Date().toISOString().slice(0, 10);
     let userPlan = localStorage.getItem('lyf_plan') || 'Free';
-    let maxLimit = userPlan === 'Pro' ? 1000 : userPlan === 'Premium' ? 10000 : userPlan === 'Platinum' ? Infinity : 10;
+    let maxLimit = LIMITS[userPlan];
     
     let savedDate = localStorage.getItem('lyf_date');
     let usageCount = parseInt(localStorage.getItem('lyf_usage') || '0', 10);
@@ -712,6 +815,7 @@
       maxLimit = LIMITS[planName];
       localStorage.setItem('lyf_plan', planName);
       updateUsageUI();
+      if (isAdminLoggedIn) updateAdminDashboardUI();
     }
 
     function updateUsageUI() {
@@ -722,6 +826,59 @@
       btnNav.innerText = (userPlan !== 'Free') ? "Ubah Langganan" : "Mulai jadi Premium";
     }
 
+    // ==========================================
+    // ADMIN SYSTEM (LOGIN & DASHBOARD)
+    // ==========================================
+    function processAdminLogin() {
+      const u = document.getElementById('adminUsername').value.trim();
+      const p = document.getElementById('adminPassword').value.trim();
+      const err = document.getElementById('adminLoginError');
+
+      if (u === 'rafialviris' && p === 'lakone2014') {
+        err.style.display = 'none';
+        isAdminLoggedIn = true;
+        navigateTo('/admin-dashboard');
+      } else {
+        err.style.display = 'block';
+      }
+    }
+
+    function updateAdminDashboardUI() {
+      document.getElementById('admUserPlan').innerText = userPlan;
+      document.getElementById('admUsageCount').innerText = `${usageCount} File`;
+      document.getElementById('admEELocation').innerText = `${TRIGGER_DESCRIPTIONS[activeEE.trigger]} (${activeEE.reward})`;
+      document.getElementById('admEEStatus').innerText = activeEE.claimed ? "✅ Ditemukan" : "❌ Belum Ditemukan";
+      document.getElementById('admSetPlanSelect').value = userPlan;
+    }
+
+    function adminChangePlan(newPlan) {
+      applyPlanUpgrade(newPlan);
+      alert(`Paket berhasil diganti menjadi ${newPlan}`);
+    }
+
+    function adminResetUsage() {
+      usageCount = 0;
+      localStorage.setItem('lyf_usage', '0');
+      updateUsageUI();
+      updateAdminDashboardUI();
+      alert('Pemakaian harian pengguna telah di-reset ke 0.');
+    }
+
+    function adminResetEE() {
+      localStorage.removeItem('lyf_exclusive_ee');
+      activeEE = initExclusiveDeviceEE();
+      updateAdminDashboardUI();
+      alert('Lokasi Easter Egg untuk perangkat ini telah diacak ulang!');
+    }
+
+    function logoutAdmin() {
+      isAdminLoggedIn = false;
+      navigateTo('/');
+    }
+
+    // ==========================================
+    // ROUTING SYSTEM
+    // ==========================================
     function navigateTo(path) {
       history.pushState(null, '', path);
       renderPage(path);
@@ -756,6 +913,23 @@
         workspace.style.display = 'block';
         document.getElementById('workspaceTitle').innerText = 'Pengubah Format File';
         document.getElementById('convertTool').style.display = 'block';
+      } else if (path === '/admin-login') {
+        hero.style.display = 'none';
+        grid.style.display = 'none';
+        workspace.style.display = 'block';
+        document.getElementById('workspaceTitle').innerText = 'Portal Admin';
+        document.getElementById('adminLoginTool').style.display = 'block';
+      } else if (path === '/admin-dashboard') {
+        if (!isAdminLoggedIn) {
+          navigateTo('/admin-login');
+          return;
+        }
+        hero.style.display = 'none';
+        grid.style.display = 'none';
+        workspace.style.display = 'block';
+        document.getElementById('workspaceTitle').innerText = 'Panel Kontrol Admin';
+        document.getElementById('adminDashboardTool').style.display = 'block';
+        updateAdminDashboardUI();
       } else if (path === '/mulai-jadi-premium') {
         modal.style.display = 'flex';
         selectStep.style.display = 'block';
@@ -882,6 +1056,7 @@
             usageCount++;
             localStorage.setItem('lyf_usage', usageCount.toString());
             updateUsageUI();
+            if (isAdminLoggedIn) updateAdminDashboardUI();
 
             const blob = new Blob([file], { type: file.type });
             const url = URL.createObjectURL(blob);
