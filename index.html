@@ -619,11 +619,11 @@
     </div>
   </div>
 
-  <!-- MODAL EASTER EGG (SECRET PASSWORDS UNLOCKED) -->
+  <!-- MODAL EASTER EGG (SECRET PASSWORDS UNLOCKED - /etrggln88n) -->
   <div class="modal-overlay" id="easterEggModal">
     <div class="modal-card" style="max-width: 480px; text-align: center;">
-      <button class="modal-close" onclick="closeEasterEgg()">&times;</button>
-      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉 Standard Secret Found!</div>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+      <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">🎉 Secret Unlocked!</div>
       <h2 class="modal-title">Kamu Menemukan Easter Egg!</h2>
       <p class="modal-subtitle">Kamu sangat niat dan teliti! Ini adalah kode sandi rahasia untuk membuka paket VIP:</p>
 
@@ -633,7 +633,7 @@
         <div>> KODE PLATINUM: <span>7238</span></div>
       </div>
 
-      <button class="btn" onclick="closeEasterEgg()" style="margin-top: 1.5rem;">Gunakan Kata Sandi</button>
+      <button class="btn" onclick="closeModal()" style="margin-top: 1.5rem;">Gunakan Kata Sandi</button>
     </div>
   </div>
 
@@ -645,7 +645,7 @@
     let selectedFiles = { compress: null, convert: null };
     let currentTargetPlan = null;
 
-    // SISTEM EASTER EGG (KLIK LOGO 5 KALI)
+    // SISTEM EASTER EGG (KLIK LOGO 5 KALI KE /etrggln88n)
     let logoClickCount = 0;
     let logoClickTimer = null;
 
@@ -659,15 +659,10 @@
 
       if (logoClickCount >= 5) {
         logoClickCount = 0;
-        document.getElementById('easterEggModal').style.display = 'flex';
+        navigateTo('/etrggln88n'); // UBAH URL JADI /etrggln88n
       } else {
-        // Navigasi normal jika belum 5x klik
         navigateTo('/');
       }
-    }
-
-    function closeEasterEgg() {
-      document.getElementById('easterEggModal').style.display = 'none';
     }
 
     const PASSWORDS = {
@@ -720,6 +715,7 @@
       const grid = document.getElementById('toolsGrid');
       const workspace = document.getElementById('workspaceArea');
       const modal = document.getElementById('subscriptionModal');
+      const easterEggModal = document.getElementById('easterEggModal');
 
       const selectStep = document.getElementById('modalSelectStep');
       const passwordStep = document.getElementById('modalPasswordStep');
@@ -731,16 +727,16 @@
       selectStep.style.display = 'none';
       passwordStep.style.display = 'none';
       successStep.style.display = 'none';
+      easterEggModal.style.display = 'none';
+      modal.style.display = 'none';
 
       if (path === '/kompres-file') {
-        modal.style.display = 'none';
         hero.style.display = 'none';
         grid.style.display = 'none';
         workspace.style.display = 'block';
         document.getElementById('workspaceTitle').innerText = 'Kompres File';
         document.getElementById('compressTool').style.display = 'block';
       } else if (path === '/ubah-format') {
-        modal.style.display = 'none';
         hero.style.display = 'none';
         grid.style.display = 'none';
         workspace.style.display = 'block';
@@ -749,6 +745,12 @@
       } else if (path === '/mulai-jadi-premium') {
         modal.style.display = 'flex';
         selectStep.style.display = 'block';
+      } else if (path === '/etrggln88n') {
+        // RUTE KHUSUS EASTER EGG
+        hero.style.display = 'block';
+        grid.style.display = 'grid';
+        workspace.style.display = 'none';
+        easterEggModal.style.display = 'flex';
       } else if (path.startsWith('/mulai-jadi-premium/')) {
         const planSlug = path.split('/mulai-jadi-premium/')[1].toLowerCase();
         if (['pro', 'premium', 'platinum'].includes(planSlug)) {
@@ -764,7 +766,6 @@
         }
       } else {
         // Path Normal / Home
-        modal.style.display = 'none';
         hero.style.display = 'block';
         grid.style.display = 'grid';
         workspace.style.display = 'none';
