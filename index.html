@@ -3,373 +3,823 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LoveYourFile - Alat Manajemen File Online</title>
+  <title>LoveYourFile - Solusi Lengkap Kompres & Konversi File</title>
+  
+  <!-- FAVICON TULISAN LYF -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23000000'/><text x='50%' y='55%' dominant-baseline='central' text-anchor='middle' fill='%23ffffff' font-family='sans-serif' font-weight='800' font-size='42'>LYF</text></svg>">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
-    :root {
-      --primary: #4A90E2;
-      --primary-hover: #357ABD;
-      --bg: #F4F7F6;
-      --card-bg: #FFFFFF;
-      --text: #333333;
-      --text-muted: #777777;
-      --border: #E0E0E0;
-      --danger: #dc3545;
-      --success: #28a745;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #fafafa;
+      color: #121212;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      -webkit-font-smoothing: antialiased;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-    body { background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; min-height: 100vh; }
+    header {
+      padding: 1rem 5%;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e5e5;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
 
-    /* NAVBAR */
-    header { background: var(--card-bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-    .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); cursor: pointer; user-select: none; }
-    .nav-right { display: flex; align-items: center; gap: 15px; }
-    .usage-badge { background: #EBF3FA; color: var(--primary); padding: 6px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
-    .btn-upgrade { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; text-decoration: none; font-size: 0.9rem; transition: background 0.2s; }
-    .btn-upgrade:hover { background: var(--primary-hover); }
+    .brand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #000000;
+      text-decoration: none;
+      letter-spacing: -1px;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.1s ease;
+      display: inline-block;
+    }
 
-    /* MAINTENANCE BANNER */
-    .maintenance-banner { background: #fff3cd; color: #856404; border-bottom: 1px solid #ffeeba; padding: 10px; text-align: center; font-weight: 600; font-size: 0.9rem; display: none; }
+    .brand:active { transform: scale(0.95); }
+    .brand span { font-weight: 400; color: #666666; }
 
-    /* MAIN CONTAINER */
-    main { flex: 1; max-width: 1000px; width: 100%; margin: 2rem auto; padding: 0 1rem; }
+    .nav-links {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-    /* HERO SECTION */
-    .hero { text-align: center; margin-bottom: 2.5rem; }
-    .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; color: #222; }
-    .hero p { color: var(--text-muted); font-size: 1.05rem; }
+    .nav-link {
+      text-decoration: none;
+      color: #444444;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
 
-    /* FILTERS */
-    .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 2rem; }
-    .filter-btn { background: var(--card-bg); border: 1px solid var(--border); padding: 8px 18px; border-radius: 20px; cursor: pointer; font-weight: 500; color: var(--text-muted); transition: all 0.2s; }
-    .filter-btn.active, .filter-btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .nav-link:hover { color: #000000; }
 
-    /* TOOLS GRID */
-    .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-    .tool-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
-    .tool-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .usage-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      background: #f0f0f0;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .btn-premium-nav {
+      background: #000000;
+      color: #ffffff;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+
+    .btn-premium-nav:hover { background: #333333; }
+
+    .btn-admin-nav {
+      background: #f0f0f0;
+      color: #000000;
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border: 1px solid #cccccc;
+      transition: all 0.2s;
+    }
+
+    .btn-admin-nav:hover { background: #e0e0e0; }
+
+    .hero {
+      text-align: center;
+      padding: 3rem 1rem 2rem 1rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #000000;
+      letter-spacing: -1px;
+      line-height: 1.25;
+      margin-bottom: 0.8rem;
+    }
+
+    .hero p {
+      font-size: 1rem;
+      color: #666666;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .filter-container {
+      display: flex;
+      justify-content: center;
+      gap: 0.75rem;
+      margin: 1.5rem auto 2.5rem auto;
+      flex-wrap: wrap;
+    }
+
+    .filter-btn {
+      padding: 0.55rem 1.2rem;
+      border: 1px solid #e0e0e0;
+      background: #ffffff;
+      color: #555555;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.8rem;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .filter-btn:hover, .filter-btn.active {
+      background: #000000;
+      color: #ffffff;
+      border-color: #000000;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1100px;
+      width: 90%;
+      margin: 0 auto 3rem auto;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tool-card {
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 1.75rem;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-3px);
+      border-color: #000000;
+    }
+
     .tool-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .tool-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
-    .tool-desc { color: var(--text-muted); font-size: 0.9rem; line-height: 1.4; margin-bottom: 1rem; }
 
-    /* WORKSPACE (TOOL VIEWS) */
-    .workspace { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 2rem; display: none; }
-    .workspace-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1rem; }
-    .btn-back { background: transparent; border: 1px solid var(--border); padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: 500; }
-    .btn-back:hover { background: #f0f0f0; }
+    .tool-card h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
 
-    /* DROPZONE & FORMS */
-    .dropzone { border: 2px dashed var(--primary); background: #F8FAFC; border-radius: 8px; padding: 2.5rem 1rem; text-align: center; cursor: pointer; margin-bottom: 1.5rem; transition: background 0.2s; }
-    .dropzone:hover { background: #EEF4FA; }
-    .dropzone input { display: none; }
-    .file-info { margin-top: 1rem; font-weight: 600; color: var(--primary); }
-    .error-msg { margin-top: 0.5rem; color: var(--danger); font-size: 0.85rem; display: none; }
+    .tool-card p {
+      font-size: 0.85rem;
+      color: #666666;
+      line-height: 1.5;
+    }
 
-    .form-group { margin-bottom: 1.5rem; }
-    .form-group label { display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem; }
-    .form-control { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 0.95rem; }
+    .workspace {
+      display: none;
+      background: #ffffff;
+      border: 1px solid #e5e5e5;
+      border-radius: 12px;
+      padding: 2rem;
+      max-width: 850px;
+      margin: 0 auto;
+    }
 
-    .btn-action { width: 100%; background: var(--primary); color: #fff; border: none; padding: 12px; border-radius: 6px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    .btn-action:hover { background: var(--primary-hover); }
-    .btn-action:disabled { background: #ccc; cursor: not-allowed; }
+    .workspace-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
 
-    /* PROGRESS & DOWNLOAD */
-    .progress-wrapper { margin-top: 1.5rem; display: none; }
-    .progress-bar-container { background: #E0E0E0; border-radius: 10px; height: 12px; overflow: hidden; margin-bottom: 0.5rem; }
-    .progress-bar { background: var(--primary); height: 100%; width: 0%; transition: width 0.2s; }
-    .btn-download { display: none; margin-top: 1rem; background: var(--success); text-align: center; text-decoration: none; color: #fff; padding: 12px; border-radius: 6px; font-weight: 600; }
-    .btn-download:hover { background: #218838; }
+    .btn-back {
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #666666;
+      cursor: pointer;
+    }
 
-    /* MODAL */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 200; }
-    .modal { background: var(--card-bg); border-radius: 8px; max-width: 500px; width: 90%; padding: 2rem; position: relative; }
-    .modal-close { position: absolute; top: 15px; right: 15px; font-size: 1.2rem; cursor: pointer; color: #888; border: none; background: none; }
-    .plan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 1.5rem 0; }
-    .plan-card { border: 1px solid var(--border); padding: 1rem 0.5rem; border-radius: 6px; text-align: center; cursor: pointer; transition: all 0.2s; }
-    .plan-card:hover { border-color: var(--primary); background: #F8FAFC; }
-    .plan-name { font-weight: bold; font-size: 0.9rem; }
-    .plan-price { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
+    .drop-zone {
+      border: 2px dashed #cccccc;
+      border-radius: 8px;
+      padding: 3rem 1.5rem;
+      text-align: center;
+      background: #fafafa;
+      cursor: pointer;
+      margin-bottom: 1.5rem;
+    }
 
-    /* ADMIN PANEL */
-    .admin-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.85rem; }
-    .admin-table th, .admin-table td { border: 1px solid var(--border); padding: 8px; text-align: left; }
-    .admin-table th { background: #f8f9fa; }
-    .admin-controls { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 1.5rem; }
-    .admin-card { border: 1px solid var(--border); padding: 1rem; border-radius: 6px; background: #fafafa; }
-    .admin-card h4 { margin-bottom: 0.75rem; font-size: 0.95rem; color: #333; }
+    .drop-zone:hover { border-color: #000000; background: #f0f0f0; }
+    input[type="file"] { display: none; }
 
-    /* FOOTER */
-    footer { text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.85rem; border-top: 1px solid var(--border); background: var(--card-bg); margin-top: auto; }
-    footer span { cursor: pointer; user-select: none; }
+    .converter-select-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group { margin-bottom: 1.25rem; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 0.4rem; }
+
+    select, input[type="password"], input[type="text"], input[type="number"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1px solid #cccccc;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    select:focus, input[type="password"]:focus, input[type="text"]:focus, input[type="number"]:focus { border-color: #000000; }
+
+    .btn {
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid #000000;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .btn:disabled {
+      background: #e5e5e5;
+      border-color: #e5e5e5;
+      color: #999999;
+      cursor: not-allowed;
+    }
+
+    .btn-download {
+      background: #ffffff;
+      color: #000000;
+      border: 2px solid #000000;
+      margin-top: 1rem;
+      display: none;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .error-msg, .file-info {
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 1.25rem;
+      display: none;
+    }
+
+    .error-msg { border: 1px solid #000000; color: #000000; }
+    .file-info { background: #fafafa; border: 1px solid #e5e5e5; }
+
+    .progress-wrapper { margin-top: 1.25rem; display: none; }
+    .progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; color: #666; margin-bottom: 0.4rem; }
+    .progress-bar-bg { width: 100%; height: 8px; background: #e5e5e5; border-radius: 4px; overflow: hidden; }
+    .progress-bar-fill { height: 100%; width: 0%; background: #000000; transition: width 0.2s ease; }
+
+    /* MODAL STYLES */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 12px;
+      max-width: 850px;
+      width: 100%;
+      padding: 2rem 1.5rem;
+      position: relative;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem; right: 1.25rem;
+      font-size: 1.5rem; font-weight: 700;
+      cursor: pointer; border: none; background: transparent;
+    }
+
+    .modal-title { text-align: center; font-size: 1.5rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .modal-subtitle { text-align: center; color: #666666; font-size: 0.88rem; margin-bottom: 1.5rem; }
+
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .plan-card {
+      border: 1px solid #e5e5e5;
+      border-radius: 10px;
+      padding: 1.25rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .plan-name { font-size: 1.1rem; font-weight: 800; margin-bottom: 0.4rem; }
+    .plan-limit { font-size: 0.85rem; font-weight: 700; color: #333333; margin-bottom: 0.8rem; }
+    .plan-desc { font-size: 0.78rem; color: #666666; line-height: 1.4; margin-bottom: 1.25rem; }
+
+    .password-view, .success-view, .maintenance-view {
+      display: none;
+      max-width: 450px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .alert-error {
+      color: #d9534f;
+      background: #fdf7f7;
+      border: 1px solid #d9534f;
+      padding: 0.65rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    .green-check-icon {
+      width: 64px; height: 64px;
+      background: #28a745; color: #ffffff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
+    }
+
+    .warning-icon {
+      width: 64px; height: 64px;
+      background: #ffc107; color: #000000;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
+    }
+
+    /* ADMIN DASHBOARD ADVANCED STYLES */
+    .admin-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      padding: 1.25rem;
+      border-radius: 8px;
+    }
+
+    .stat-card h4 { font-size: 0.75rem; color: #666; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .stat-card .value { font-size: 1.2rem; font-weight: 800; color: #000; }
+
+    .admin-section-box {
+      border: 1px solid #e5e5e5;
+      background: #fafafa;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .admin-section-box h3 {
+      font-size: 1rem; font-weight: 800; margin-bottom: 1rem; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.4rem;
+    }
+
+    .admin-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .log-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    .log-table th, .log-table td {
+      border: 1px solid #e0e0e0;
+      padding: 0.6rem 0.8rem;
+      text-align: left;
+    }
+
+    .log-table th { background: #eeeeee; font-weight: 700; }
+
+    .maintenance-banner {
+      background: #d9534f;
+      color: #ffffff;
+      text-align: center;
+      padding: 0.75rem;
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: none;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem 5%;
+      color: #888888;
+      font-size: 0.8rem;
+      border-top: 1px solid #e5e5e5;
+      background: #ffffff;
+      user-select: none;
+    }
+
+    @media (max-width: 650px) {
+      .converter-select-grid, .admin-grid-2col { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>
 
+  <!-- MAINTENANCE BANNER -->
+  <div class="maintenance-banner" id="maintenanceBanner">
+    ⚠️ SISTEM DALAM PERBAIKAN (MAINTENANCE MODE). AKSES FILE DIBATASI OLEH ADMIN.
+  </div>
+
   <!-- NAVBAR -->
   <header>
-    <div class="logo" onclick="handleLogoClick()">LoveYourFile</div>
-    <div class="nav-right">
-      <div class="usage-badge" id="usageDisplay">0 / 10 (Free)</div>
-      <button class="btn-upgrade" id="premiumBtnNav" onclick="navigateTo('/mulai-jadi-premium')">Mulai jadi Premium</button>
+    <a class="brand" id="brandLogo" onclick="handleLogoClick()">LoveYour<span>File</span></a>
+    <div class="nav-links">
+      <a class="nav-link" onclick="navigateTo('/')">Home</a>
+      <a class="nav-link" onclick="navigateTo('/kompres-file')">Kompres</a>
+      <a class="nav-link" onclick="navigateTo('/ubah-format')">Ubah Format</a>
+      <span class="usage-badge" id="usageDisplay">0 / 10</span>
+      <button class="btn-premium-nav" id="premiumBtnNav" onclick="navigateTo('/mulai-jadi-premium')">Mulai jadi Premium</button>
+      <button class="btn-admin-nav" id="adminBtnNav" onclick="navigateTo('/admin-login')">Admin</button>
     </div>
   </header>
 
-  <!-- MAINTENANCE BANNER -->
-  <div class="maintenance-banner" id="maintenanceBanner">
-    ⛔ SITUS DALAM MODE MAINTENANCE OLEH ADMIN
+  <!-- HERO BANNER -->
+  <div class="hero" id="heroSection">
+    <h1>Semua Alat Pengelola File di Satu Tempat</h1>
+    <p>Kompresi & konversi dokumen atau media secara instan. 100% cepat dan tanpa ribet.</p>
+    
+    <div class="filter-container">
+      <button class="filter-btn active" onclick="filterTools('all', this)">Semua Alat</button>
+      <button class="filter-btn" onclick="filterTools('compress', this)">Kompresi</button>
+      <button class="filter-btn" onclick="filterTools('convert', this)">Konversi Format</button>
+    </div>
   </div>
 
   <!-- MAIN CONTAINER -->
   <main>
-    <!-- HERO SECTION -->
-    <div class="hero" id="heroSection">
-      <h1>Kelola & Olah File Anda dengan Mudah</h1>
-      <p>Alat pemroses file cepat, aman, dan langsung di peramban Anda.</p>
-    </div>
-
-    <!-- FILTERS -->
-    <div class="filters" id="filterSection">
-      <button class="filter-btn active" onclick="filterTools('all', this)">Semua</button>
-      <button class="filter-btn" onclick="filterTools('optimize', this)">Optimasi</button>
-      <button class="filter-btn" onclick="filterTools('convert', this)">Konversi</button>
-    </div>
-
-    <!-- TOOLS GRID -->
     <div class="tools-grid" id="toolsGrid">
-      <div class="tool-card" data-category="optimize" onclick="navigateTo('/kompres-file')">
+      <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
         <div>
-          <div class="tool-icon">🗜️</div>
-          <div class="tool-title">Kompres File</div>
-          <div class="tool-desc">Kecilkan ukuran file dokumen atau gambar tanpa mengorbankan kualitas.</div>
+          <div class="tool-icon">📁</div>
+          <h3>Kompres File</h3>
+          <p>Kecilkan ukuran file tanpa mengorbankan kualitas file utama Anda.</p>
         </div>
       </div>
+
       <div class="tool-card" data-category="convert" onclick="navigateTo('/ubah-format')">
         <div>
           <div class="tool-icon">🔄</div>
-          <div class="tool-title">Ubah Format</div>
-          <div class="tool-desc">Ubah format gambar dan dokumen ke berbagai pilihan format lainnya.</div>
+          <h3>Ubah Format File</h3>
+          <p>Ubah format dokumen, gambar, audio, atau video sesuai kebutuhan.</p>
         </div>
       </div>
     </div>
 
-    <!-- WORKSPACE AREA -->
+    <!-- WORKSPACE -->
     <div class="workspace" id="workspaceArea">
       <div class="workspace-header">
-        <h2 id="workspaceTitle">Judul Alat</h2>
-        <button class="btn-back" onclick="handleBackClick()">← Kembali</button>
+        <button class="btn-back" onclick="handleBackClick()">← Kembali ke Home</button>
+        <h2 id="workspaceTitle" style="font-size: 1.15rem; font-weight: 800;">Judul Alat</h2>
       </div>
 
-      <!-- CONVERT TOOL VIEW -->
-      <div class="tool-view" id="convertTool" style="display: none;">
-        <div class="dropzone" onclick="document.getElementById('convertFileInput').click()">
-          <div>📄 Klik atau seret file ke sini untuk diubah formatnya</div>
-          <input type="file" id="convertFileInput" onchange="handleFileSelect(this, 'convert')">
-          <div class="file-info" id="convertFileInfo" style="display: none;"></div>
-          <div class="error-msg" id="convertError"></div>
+      <!-- TOOL: KOMPRES -->
+      <div id="compressTool" class="tool-view" style="display: none;">
+        <div class="error-msg" id="compressError"></div>
+        <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📁</div>
+          <p style="font-weight: 700;">Klik atau seret file ke sini</p>
+          <span style="font-size: 0.8rem; color: #777;" id="compressLimitHint">Format .exe tidak didukung</span>
         </div>
-
-        <div class="form-group">
-          <label for="formatSource">Format Asal:</label>
-          <select id="formatSource" class="form-control" onchange="checkFormatTrigger()">
-            <option value="auto">Deteksi Otomatis</option>
-            <option value="png">PNG</option>
-            <option value="jpg">JPG</option>
-            <option value="pdf">PDF</option>
-            <option value="docx">DOCX</option>
-          </select>
+        <input type="file" id="compressInput" onchange="handleFileSelect(this, 'compress')">
+        <div class="file-info" id="compressFileInfo"></div>
+        <button class="btn" id="compressBtn" onclick="startProcess('compress')" disabled>Mulai Kompresi</button>
+        <div class="progress-wrapper" id="compressProgressWrapper">
+          <div class="progress-info"><span>Memproses...</span><span id="compressPercent">0%</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="compressBar"></div></div>
         </div>
+        <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
+      </div>
 
-        <div class="form-group">
-          <label for="formatTarget">Format Tujuan:</label>
-          <select id="formatTarget" class="form-control" onchange="checkFormatTrigger()">
-            <option value="jpg">JPG</option>
-            <option value="png">PNG</option>
-            <option value="pdf">PDF</option>
-            <option value="webp">WEBP</option>
-          </select>
+      <!-- TOOL: CONVERT -->
+      <div id="convertTool" class="tool-view" style="display: none;">
+        <div class="error-msg" id="convertError"></div>
+        <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
+          <div style="font-size: 2rem; margin-bottom: 0.5rem;">📄</div>
+          <p style="font-weight: 700;">Klik atau seret file ke sini</p>
+          <span style="font-size: 0.8rem; color: #777;">Pilih file yang akan diubah</span>
         </div>
+        <input type="file" id="convertInput" onchange="handleFileSelect(this, 'convert')">
+        <div class="file-info" id="convertFileInfo"></div>
 
-        <button class="btn-action" id="convertBtn" onclick="startProcess('convert')" disabled>Ubah Format Sekarang</button>
-        
-        <div class="progress-wrapper" id="convertProgressWrapper">
-          <div class="progress-bar-container">
-            <div class="progress-bar" id="convertBar"></div>
+        <div class="converter-select-grid">
+          <div class="form-group">
+            <label for="formatSource">Format Awal</label>
+            <select id="formatSource" onchange="checkFormatTrigger()">
+              <option value="auto">Deteksi Otomatis</option>
+              <optgroup label="Gambar">
+                <option value="jpg">JPG / JPEG</option>
+                <option value="png">PNG</option>
+                <option value="webp">WEBP</option>
+              </optgroup>
+              <optgroup label="Dokumen">
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+                <option value="xlsx">XLSX</option>
+              </optgroup>
+            </select>
           </div>
-          <div style="text-align: right; font-size: 0.85rem; color: var(--text-muted);" id="convertPercent">0%</div>
+          <div class="form-group">
+            <label for="formatTarget">Format Tujuan</label>
+            <select id="formatTarget" onchange="checkFormatTrigger()">
+              <optgroup label="Gambar">
+                <option value="png">PNG</option>
+                <option value="jpg">JPG</option>
+                <option value="webp">WEBP</option>
+              </optgroup>
+              <optgroup label="Dokumen">
+                <option value="pdf">PDF</option>
+                <option value="docx">DOCX</option>
+              </optgroup>
+            </select>
+          </div>
         </div>
 
-        <a href="#" class="btn-download" id="convertDownloadBtn">Unduh File Hasil Konversi</a>
+        <button class="btn" id="convertBtn" onclick="startProcess('convert')" disabled>Ubah Format</button>
+        <div class="progress-wrapper" id="convertProgressWrapper">
+          <div class="progress-info"><span>Mengonversi...</span><span id="convertPercent">0%</span></div>
+          <div class="progress-bar-bg"><div class="progress-bar-fill" id="convertBar"></div></div>
+        </div>
+        <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
       </div>
 
-      <!-- ADMIN LOGIN TOOL VIEW -->
-      <div class="tool-view" id="adminLoginTool" style="display: none;">
+      <!-- ADMIN LOGIN VIEW -->
+      <div id="adminLoginTool" class="tool-view" style="display: none; max-width: 400px; margin: 0 auto;">
+        <h2 style="text-align: center; margin-bottom: 0.5rem; font-weight: 800;">Login Admin</h2>
+        <p style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 1.5rem;">Masuk ke sistem kontrol utama.</p>
+        
+        <div class="alert-error" id="adminLoginError">Username atau Password Admin Salah!</div>
+
         <div class="form-group">
           <label for="adminUsername">Username Admin</label>
-          <input type="text" id="adminUsername" class="form-control" placeholder="Masukkan username">
+          <input type="text" id="adminUsername" placeholder="Masukkan username">
         </div>
         <div class="form-group">
           <label for="adminPassword">Password Admin</label>
-          <input type="password" id="adminPassword" class="form-control" placeholder="Masukkan password">
+          <input type="password" id="adminPassword" placeholder="Masukkan password">
         </div>
-        <div class="error-msg" id="adminLoginError" style="margin-bottom: 1rem;">Username atau Password Admin salah!</div>
-        <button class="btn-action" onclick="processAdminLogin()">Login Admin</button>
+        <button class="btn" onclick="processAdminLogin()">Login ke Dashboard</button>
       </div>
 
-      <!-- ADMIN DASHBOARD TOOL VIEW -->
-      <div class="tool-view" id="adminDashboardTool" style="display: none;">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-          <h3>Status & Kendali Sistem</h3>
-          <button class="btn-back" style="background: var(--danger); color: white; border: none;" onclick="logoutAdmin()">Logout Admin</button>
+      <!-- ADMIN DASHBOARD VIEW (ADVANCED) -->
+      <div id="adminDashboardTool" class="tool-view" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-weight: 800;">Dashboard Kontrol Admin</h2>
+          <button class="filter-btn" onclick="logoutAdmin()">Logout Admin</button>
         </div>
 
-        <div class="admin-controls">
-          <div class="admin-card">
-            <h4>Info Sesi Perangkat</h4>
-            <p style="font-size: 0.85rem; margin-bottom: 4px;">Paket Aktif: <b id="admUserPlan">Free</b></p>
-            <p style="font-size: 0.85rem; margin-bottom: 4px;">Penggunaan Hari Ini: <b id="admUsageCount">0 File</b></p>
-            <p style="font-size: 0.85rem; margin-bottom: 4px;">Lokasi EE Perangkat Ini: <b id="admEELocation">-</b></p>
-            <p style="font-size: 0.85rem;">Status Maintenance: <b id="admMaintStatus">OFF</b></p>
+        <!-- METRICS CARDS -->
+        <div class="admin-card-grid">
+          <div class="stat-card">
+            <h4>Paket Pengguna</h4>
+            <div class="value" id="admUserPlan">Free</div>
           </div>
-
-          <div class="admin-card">
-            <h4>Aksi Cepat</h4>
-            <div style="display: flex; flex-direction: column; gap: 8px;">
-              <button class="btn-upgrade" style="background: #6c757d; font-size: 0.8rem;" onclick="adminResetUsage()">Reset Pemakaian Perangkat (ke 0)</button>
-              <button class="btn-upgrade" style="background: #17a2b8; font-size: 0.8rem;" onclick="adminResetEE()">Acak Ulang EE Perangkat Ini</button>
-              <button class="btn-upgrade" id="btnToggleMaintenance" style="background: var(--danger); font-size: 0.8rem;" onclick="adminToggleMaintenance()">Aktifkan Maintenance Mode</button>
-            </div>
+          <div class="stat-card">
+            <h4>Pemakaian Hari Ini</h4>
+            <div class="value" id="admUsageCount">0</div>
+          </div>
+          <div class="stat-card">
+            <h4>Easter Egg Aktif</h4>
+            <div class="value" id="admEELocation" style="font-size: 0.85rem;">-</div>
+          </div>
+          <div class="stat-card">
+            <h4>Status Maintenance</h4>
+            <div class="value" id="admMaintStatus" style="font-size: 1rem;">OFF</div>
           </div>
         </div>
 
-        <div class="admin-controls">
-          <div class="admin-card">
-            <h4>Set Tingkat Paket Perangkat</h4>
-            <select id="admSetPlanSelect" class="form-control" style="margin-bottom: 8px;" onchange="adminChangePlan(this.value)">
-              <option value="Free">Free</option>
-              <option value="Pro">Pro</option>
-              <option value="Premium">Premium</option>
-              <option value="Platinum">Platinum</option>
-            </select>
+        <!-- SYSTEM CONFIGURATION SECTION -->
+        <div class="admin-section-box">
+          <h3>1. Kontrol Sistem & Sandbox File</h3>
+          <div class="admin-grid-2col">
+            <div class="form-group">
+              <label>Batas Maksimal Ukuran File Upload (MB):</label>
+              <input type="number" id="admMaxFileSize" value="50" onchange="adminUpdateSettings()">
+            </div>
+            <div class="form-group">
+              <label>Simulasi Kecepatan Proses File:</label>
+              <select id="admProcessSpeed" onchange="adminUpdateSettings()">
+                <option value="100">Sangat Cepat (100ms)</option>
+                <option value="250" selected>Normal (250ms)</option>
+                <option value="500">Lambat (500ms)</option>
+              </select>
+            </div>
           </div>
-
-          <div class="admin-card">
-            <h4>Pengaturan Sistem & Batasan</h4>
-            <div class="form-group" style="margin-bottom: 8px;">
-              <label style="font-size: 0.75rem;">Batas Max Ukuran File (MB):</label>
-              <input type="number" id="admMaxFileSize" class="form-control" style="padding: 4px 8px; font-size: 0.85rem;" onchange="adminUpdateSettings()">
-            </div>
-            <div class="form-group" style="margin-bottom: 8px;">
-              <label style="font-size: 0.75rem;">Kecepatan Proses (Interval ms - makin kecil makin cepat):</label>
-              <input type="number" id="admProcessSpeed" class="form-control" style="padding: 4px 8px; font-size: 0.85rem;" onchange="adminUpdateSettings()">
-            </div>
-            <label style="font-size: 0.8rem; display: flex; align-items: center; gap: 5px; cursor: pointer;">
-              <input type="checkbox" id="admBlockExe" onchange="adminUpdateSettings()"> Blokir Ekstensi .exe
+          <div class="form-group">
+            <label>
+              <input type="checkbox" id="admBlockExe" checked onchange="adminUpdateSettings()"> 
+              Blokir Pengunggahan Ekstensi File .exe
             </label>
           </div>
         </div>
 
-        <div class="admin-card" style="margin-top: 15px;">
-          <h4>Atur Sandi Paket Langganan</h4>
-          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
-            <div>
-              <label style="font-size: 0.75rem;">Sandi Pro:</label>
-              <input type="text" id="admPassPro" class="form-control" style="padding: 4px 8px; font-size: 0.85rem;">
+        <!-- PASSWORD MANAGEMENT SECTION -->
+        <div class="admin-section-box">
+          <h3>2. Manajemen Kode Sandi Paket</h3>
+          <div class="admin-grid-2col">
+            <div class="form-group">
+              <label>Sandi Paket PRO:</label>
+              <input type="text" id="admPassPro" value="3400">
             </div>
-            <div>
-              <label style="font-size: 0.75rem;">Sandi Premium:</label>
-              <input type="text" id="admPassPremium" class="form-control" style="padding: 4px 8px; font-size: 0.85rem;">
-            </div>
-            <div>
-              <label style="font-size: 0.75rem;">Sandi Platinum:</label>
-              <input type="text" id="admPassPlatinum" class="form-control" style="padding: 4px 8px; font-size: 0.85rem;">
+            <div class="form-group">
+              <label>Sandi Paket PREMIUM:</label>
+              <input type="text" id="admPassPremium" value="3418">
             </div>
           </div>
-          <button class="btn-upgrade" style="margin-top: 10px; width: 100%; font-size: 0.8rem;" onclick="adminSavePasswords()">Simpan Perubahan Sandi</button>
+          <div class="form-group" style="max-width: 50%;">
+            <label>Sandi Paket PLATINUM:</label>
+            <input type="text" id="admPassPlatinum" value="7238">
+          </div>
+          <button class="btn" style="width: auto;" onclick="adminSavePasswords()">Simpan Perubahan Sandi</button>
         </div>
 
-        <div class="admin-card" style="margin-top: 15px;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-            <h4>Log Aktivitas (Maks 20 Terakhir)</h4>
-            <button style="background: none; border: none; color: var(--danger); cursor: pointer; font-size: 0.8rem;" onclick="adminClearLogs()">Bersihkan Log</button>
+        <!-- LOG HISTORY SECTION -->
+        <div class="admin-section-box">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 style="border: none; padding: 0; margin: 0;">3. Riwayat Aktivitas File Pengguna</h3>
+            <button class="filter-btn" style="padding: 0.3rem 0.8rem; font-size: 0.75rem;" onclick="adminClearLogs()">Hapus Log</button>
           </div>
-          <table class="admin-table">
-            <thead>
-              <tr>
-                <th>Waktu</th>
-                <th>Aksi</th>
-                <th>Nama File</th>
-                <th>Ukuran</th>
-              </tr>
-            </thead>
-            <tbody id="admLogTableBody">
-              <!-- Render via JS -->
-            </tbody>
-          </table>
+          <div style="max-height: 200px; overflow-y: auto;">
+            <table class="log-table">
+              <thead>
+                <tr>
+                  <th>Waktu</th>
+                  <th>Aksi</th>
+                  <th>Nama File</th>
+                  <th>Ukuran</th>
+                </tr>
+              </thead>
+              <tbody id="admLogTableBody">
+                <tr><td colspan="4" style="text-align: center; color: #999;">Belum ada aktivitas tercatat.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- QUICK ACTIONS SECTION -->
+        <div class="admin-section-box">
+          <h3>4. Akses Cepat & Maintenance Switch</h3>
+          <div class="admin-actions">
+            <div class="form-group" style="margin: 0; flex: 1; min-width: 200px;">
+              <select id="admSetPlanSelect" onchange="adminChangePlan(this.value)">
+                <option value="Free">Set Paket: Free (10x)</option>
+                <option value="Pro">Set Paket: Pro (1.000x)</option>
+                <option value="Premium">Set Paket: Premium (10.000x)</option>
+                <option value="Platinum">Set Paket: Platinum (Unlimited)</option>
+              </select>
+            </div>
+            <button class="btn" style="width: auto; background: #28a745; border-color: #28a745;" onclick="adminResetUsage()">Reset Limit Hari Ini</button>
+            <button class="btn" style="width: auto; background: #ffc107; color: #000; border-color: #ffc107;" onclick="adminResetEE()">Acak Ulang Easter Egg</button>
+            <button class="btn" id="btnToggleMaintenance" style="width: auto; background: #dc3545; border-color: #dc3545;" onclick="adminToggleMaintenance()">Aktifkan Maintenance Mode</button>
+          </div>
         </div>
 
       </div>
+
     </div>
   </main>
 
-  <!-- MODAL LAYER -->
+  <!-- MODAL LANGGANAN / PRICING & MAINTENANCE -->
   <div class="modal-overlay" id="subscriptionModal">
-    <div class="modal">
-      <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">&times;</button>
       
-      <!-- STEP 1: SELECT PLAN -->
+      <!-- STEP 1: PILIH PAKET -->
       <div id="modalSelectStep">
-        <h3 style="text-align: center; margin-bottom: 0.5rem;">Pilih Paket Langganan</h3>
-        <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem;">Tingkatkan batas pemakaian file harian Anda.</p>
+        <h2 class="modal-title">Pilih Paket Langganan</h2>
+        <p class="modal-subtitle">Tingkatkan batas pemakaian harian untuk akses lebih cepat dan luas.</p>
         
-        <div class="plan-grid">
-          <div class="plan-card" onclick="navigateTo('/mulai-jadi-premium/pro')">
-            <div class="plan-name">PRO</div>
-            <div class="plan-price">1.000 File/hari</div>
+        <div class="plans-grid">
+          <div class="plan-card">
+            <div>
+              <div class="plan-name">Pro</div>
+              <div class="plan-limit">1.000 kali / hari</div>
+              <div class="plan-desc">Sangat pas untuk pemakaian rutin dokumen harian.</div>
+            </div>
+            <button class="btn" onclick="navigateTo('/mulai-jadi-premium/pro')">Pilih Pro</button>
           </div>
-          <div class="plan-card" onclick="navigateTo('/mulai-jadi-premium/premium')">
-            <div class="plan-name">PREMIUM</div>
-            <div class="plan-price">10.000 File/hari</div>
+
+          <div class="plan-card" style="border-color: #000000;">
+            <div>
+              <div class="plan-name">Premium</div>
+              <div class="plan-limit">10.000 kali / hari</div>
+              <div class="plan-desc">Cocok untuk pengerjaan profesional skala besar.</div>
+            </div>
+            <button class="btn" onclick="navigateTo('/mulai-jadi-premium/premium')">Pilih Premium</button>
           </div>
-          <div class="plan-card" onclick="navigateTo('/mulai-jadi-premium/platinum')">
-            <div class="plan-name">PLATINUM</div>
-            <div class="plan-price">Tanpa Batas</div>
+
+          <div class="plan-card">
+            <div>
+              <div class="plan-name">Platinum</div>
+              <div class="plan-limit">Tiada Batas</div>
+              <div class="plan-desc">Akses tak terbatas tanpa batasan harian.</div>
+            </div>
+            <button class="btn" onclick="navigateTo('/mulai-jadi-premium/platinum')">Pilih Platinum</button>
           </div>
         </div>
       </div>
 
-      <!-- STEP 2: PASSWORD INPUT -->
-      <div id="modalPasswordStep" style="display: none;">
-        <h3 style="text-align: center; margin-bottom: 0.5rem;" id="passViewTitle">Aktivasi Paket</h3>
-        <p style="text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Masukkan sandi khusus untuk mengaktifkan paket ini.</p>
+      <!-- STEP 2: INPUT SANDI -->
+      <div id="modalPasswordStep" class="password-view">
+        <h2 class="modal-title" id="passViewTitle">Verifikasi Paket</h2>
+        <p class="modal-subtitle">Masukkan kata sandi untuk mengaktifkan paket ini.</p>
         
-        <div class="form-group">
-          <input type="password" id="planPasswordInput" class="form-control" placeholder="Masukkan Sandi Paket">
+        <div class="alert-error" id="passwordError">Sandi yang kamu masukkan salah</div>
+        
+        <div class="form-group" style="text-align: left;">
+          <label for="planPasswordInput">Kata Sandi Paket</label>
+          <input type="password" id="planPasswordInput" placeholder="Masukkan 4 digit sandi">
         </div>
-        <div class="error-msg" id="passwordError" style="margin-bottom: 1rem; text-align: center;">Sandi yang kamu masukkan salah</div>
-        <button class="btn-action" onclick="verifyPassword()">Aktivasi</button>
+
+        <button class="btn" onclick="verifyPassword()" style="margin-bottom: 0.75rem;">Konfirmasi Sandi</button>
+        <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
       </div>
 
-      <!-- STEP 3: SUCCESS -->
-      <div id="modalSuccessStep" style="display: none; text-align: center;">
-        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎉</div>
-        <h3 id="successTitleText" style="margin-bottom: 0.5rem;">Berhasil Ditambahkan!</h3>
-        <p id="successMessageText" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Akses fitur Kamu telah diperbarui.</p>
-        <button class="btn-action" onclick="closeModal()">Tutup & Lanjutkan</button>
+      <!-- STEP 3: HASIL SUKSES -->
+      <div id="modalSuccessStep" class="success-view">
+        <div class="green-check-icon">✓</div>
+        <h2 class="modal-title" style="margin-bottom: 0.5rem;" id="successTitleText">Berhasil Ditambahkan!</h2>
+        <p class="modal-subtitle" id="successMessageText" style="font-weight: 700; color: #000000; font-size: 1rem; margin-bottom: 1.5rem;">
+          kamu sekarang sudah jadi pro
+        </p>
+        <button class="btn" onclick="closeModal()">Selesai & Mulai Menggunakan</button>
       </div>
 
-      <!-- STEP 4: ERROR / MAINTENANCE REDIRECT VIEW -->
-      <div id="modalMaintenanceStep" style="display: none; text-align: center;">
-        <div style="font-size: 3rem; margin-bottom: 0.5rem;">⚠️</div>
-        <h3 style="margin-bottom: 0.5rem; color: var(--danger);">Fitur Kompres File Error / Maintenance</h3>
-        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 1.5rem;">Maaf, fitur kompres file saat ini tidak dapat diakses atau sedang mengalami gangguan.</p>
-        <button class="btn-action" onclick="closeModal()">Kembali ke Beranda</button>
+      <!-- STEP 4: PEMELIHARAAN (MAINTENANCE POPUP) -->
+      <div id="modalMaintenanceStep" class="maintenance-view">
+        <div class="warning-icon">🛠️</div>
+        <h2 class="modal-title" style="margin-bottom: 0.5rem;">Tab Ini Sedang Dalam Pemeliharaan</h2>
+        <p class="modal-subtitle" style="font-size: 0.95rem; line-height: 1.6; color: #444; margin-bottom: 1.5rem;">
+          Layanan kompresi file saat ini tidak dapat diakses karena tim kami sedang melakukan pemeliharaan rutin dan peningkatan kinerja server. Mohon kembali beberapa saat lagi. Terima kasih atas kesabaran Anda!
+        </p>
+        <button class="btn" onclick="closeModal()">Kembali ke Beranda</button>
       </div>
+
     </div>
   </div>
 
-  <!-- FOOTER -->
-  <footer>
-    <span onclick="handleFooterDblClick()">© 2026 LoveYourFile. Hak Cipta Dilindungi.</span>
+  <footer id="footerText" ondblclick="handleFooterDblClick()">
+    <p>&copy; 2026 LoveYourFile. All rights reserved.</p>
   </footer>
 
   <script>
@@ -665,10 +1115,9 @@
     }
 
     // ==========================================
-    // ROUTING SYSTEM (WITH FORCE REDIRECT)
+    // ROUTING SYSTEM
     // ==========================================
     function navigateTo(path) {
-      // Paksa alihkan jika mencoba membuka /kompres-file
       if (path === '/kompres-file') {
         path = '/kompres-file/error';
       }
@@ -677,12 +1126,6 @@
     }
 
     function renderPage(path) {
-      // Proteksi Tambahan: Paksa ganti URL & riwayat browser jika URL saat ini tepat /kompres-file
-      if (path === '/kompres-file') {
-        history.replaceState(null, '', '/kompres-file/error');
-        path = '/kompres-file/error';
-      }
-
       const hero = document.getElementById('heroSection');
       const grid = document.getElementById('toolsGrid');
       const workspace = document.getElementById('workspaceArea');
@@ -707,6 +1150,12 @@
         workspace.style.display = 'none';
         modal.style.display = 'flex';
         maintenanceStep.style.display = 'block';
+      } else if (path === '/kompres-file') {
+        hero.style.display = 'none';
+        grid.style.display = 'none';
+        workspace.style.display = 'block';
+        document.getElementById('workspaceTitle').innerText = 'Kompres File';
+        document.getElementById('compressTool').style.display = 'block';
       } else if (path === '/ubah-format') {
         hero.style.display = 'none';
         grid.style.display = 'none';
