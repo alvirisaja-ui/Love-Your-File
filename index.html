@@ -360,9 +360,9 @@
     .plan-limit { font-size: 0.85rem; font-weight: 700; color: #333333; margin-bottom: 0.8rem; }
     .plan-desc { font-size: 0.78rem; color: #666666; line-height: 1.4; margin-bottom: 1.25rem; }
 
-    .password-view, .success-view {
+    .password-view, .success-view, .maintenance-view {
       display: none;
-      max-width: 400px;
+      max-width: 450px;
       margin: 0 auto;
       text-align: center;
     }
@@ -382,6 +382,14 @@
     .green-check-icon {
       width: 64px; height: 64px;
       background: #28a745; color: #ffffff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
+    }
+
+    .warning-icon {
+      width: 64px; height: 64px;
+      background: #ffc107; color: #000000;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
       font-size: 2rem; margin: 0 auto 1rem auto; font-weight: 800;
@@ -464,12 +472,10 @@
 </head>
 <body>
 
-  <!-- MAINTENANCE BANNER -->
   <div class="maintenance-banner" id="maintenanceBanner">
-    ⚠️ SITEM DALAM PERBAIKAN (MAINTENANCE MODE). AKSES FILE DIBATASI OLEH ADMIN.
+    ⚠️ SISTEM DALAM PERBAIKAN (MAINTENANCE MODE). AKSES FILE DIBATASI OLEH ADMIN.
   </div>
 
-  <!-- NAVBAR -->
   <header>
     <a class="brand" id="brandLogo" onclick="handleLogoClick()">LoveYour<span>File</span></a>
     <div class="nav-links">
@@ -482,7 +488,6 @@
     </div>
   </header>
 
-  <!-- HERO BANNER -->
   <div class="hero" id="heroSection">
     <h1>Semua Alat Pengelola File di Satu Tempat</h1>
     <p>Kompresi & konversi dokumen atau media secara instan. 100% cepat dan tanpa ribet.</p>
@@ -494,7 +499,6 @@
     </div>
   </div>
 
-  <!-- MAIN CONTAINER -->
   <main>
     <div class="tools-grid" id="toolsGrid">
       <div class="tool-card" data-category="compress" onclick="navigateTo('/kompres-file')">
@@ -514,14 +518,12 @@
       </div>
     </div>
 
-    <!-- WORKSPACE -->
     <div class="workspace" id="workspaceArea">
       <div class="workspace-header">
         <button class="btn-back" onclick="handleBackClick()">← Kembali ke Home</button>
         <h2 id="workspaceTitle" style="font-size: 1.15rem; font-weight: 800;">Judul Alat</h2>
       </div>
 
-      <!-- TOOL: KOMPRES -->
       <div id="compressTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="compressError"></div>
         <div class="drop-zone" onclick="document.getElementById('compressInput').click()">
@@ -539,7 +541,6 @@
         <a href="#" id="compressDownloadBtn" class="btn btn-download" download>Download Hasil Kompresi</a>
       </div>
 
-      <!-- TOOL: CONVERT -->
       <div id="convertTool" class="tool-view" style="display: none;">
         <div class="error-msg" id="convertError"></div>
         <div class="drop-zone" onclick="document.getElementById('convertInput').click()">
@@ -591,7 +592,6 @@
         <a href="#" id="convertDownloadBtn" class="btn btn-download" download>Download Hasil Konversi</a>
       </div>
 
-      <!-- ADMIN LOGIN VIEW -->
       <div id="adminLoginTool" class="tool-view" style="display: none; max-width: 400px; margin: 0 auto;">
         <h2 style="text-align: center; margin-bottom: 0.5rem; font-weight: 800;">Login Admin</h2>
         <p style="text-align: center; color: #666; font-size: 0.85rem; margin-bottom: 1.5rem;">Masuk ke sistem kontrol utama.</p>
@@ -609,14 +609,12 @@
         <button class="btn" onclick="processAdminLogin()">Login ke Dashboard</button>
       </div>
 
-      <!-- ADMIN DASHBOARD VIEW (ADVANCED) -->
       <div id="adminDashboardTool" class="tool-view" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
           <h2 style="font-weight: 800;">Dashboard Kontrol Admin</h2>
           <button class="filter-btn" onclick="logoutAdmin()">Logout Admin</button>
         </div>
 
-        <!-- METRICS CARDS -->
         <div class="admin-card-grid">
           <div class="stat-card">
             <h4>Paket Pengguna</h4>
@@ -636,7 +634,6 @@
           </div>
         </div>
 
-        <!-- SYSTEM CONFIGURATION SECTION -->
         <div class="admin-section-box">
           <h3>1. Kontrol Sistem & Sandbox File</h3>
           <div class="admin-grid-2col">
@@ -661,7 +658,6 @@
           </div>
         </div>
 
-        <!-- PASSWORD MANAGEMENT SECTION -->
         <div class="admin-section-box">
           <h3>2. Manajemen Kode Sandi Paket</h3>
           <div class="admin-grid-2col">
@@ -681,7 +677,6 @@
           <button class="btn" style="width: auto;" onclick="adminSavePasswords()">Simpan Perubahan Sandi</button>
         </div>
 
-        <!-- LOG HISTORY SECTION -->
         <div class="admin-section-box">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
             <h3 style="border: none; padding: 0; margin: 0;">3. Riwayat Aktivitas File Pengguna</h3>
@@ -704,7 +699,6 @@
           </div>
         </div>
 
-        <!-- QUICK ACTIONS SECTION -->
         <div class="admin-section-box">
           <h3>4. Akses Cepat & Maintenance Switch</h3>
           <div class="admin-actions">
@@ -727,12 +721,10 @@
     </div>
   </main>
 
-  <!-- MODAL LANGGANAN / PRICING -->
   <div class="modal-overlay" id="subscriptionModal">
     <div class="modal-card">
       <button class="modal-close" onclick="closeModal()">&times;</button>
       
-      <!-- STEP 1: PILIH PAKET -->
       <div id="modalSelectStep">
         <h2 class="modal-title">Pilih Paket Langganan</h2>
         <p class="modal-subtitle">Tingkatkan batas pemakaian harian untuk akses lebih cepat dan luas.</p>
@@ -767,7 +759,6 @@
         </div>
       </div>
 
-      <!-- STEP 2: INPUT SANDI -->
       <div id="modalPasswordStep" class="password-view">
         <h2 class="modal-title" id="passViewTitle">Verifikasi Paket</h2>
         <p class="modal-subtitle">Masukkan kata sandi untuk mengaktifkan paket ini.</p>
@@ -783,7 +774,6 @@
         <button class="btn-back" onclick="navigateTo('/mulai-jadi-premium')" style="margin: 0 auto;">← Kembali Pilih Paket</button>
       </div>
 
-      <!-- STEP 3: HASIL SUKSES -->
       <div id="modalSuccessStep" class="success-view">
         <div class="green-check-icon">✓</div>
         <h2 class="modal-title" style="margin-bottom: 0.5rem;" id="successTitleText">Berhasil Ditambahkan!</h2>
@@ -791,6 +781,15 @@
           kamu sekarang sudah jadi pro
         </p>
         <button class="btn" onclick="closeModal()">Selesai & Mulai Menggunakan</button>
+      </div>
+
+      <div id="modalMaintenanceStep" class="maintenance-view">
+        <div class="warning-icon">🛠️</div>
+        <h2 class="modal-title" style="margin-bottom: 0.5rem;">Tab Ini Sedang Dalam Pemeliharaan</h2>
+        <p class="modal-subtitle" style="font-size: 0.95rem; line-height: 1.6; color: #444; margin-bottom: 1.5rem;">
+          Layanan kompresi file saat ini tidak dapat diakses karena tim kami sedang melakukan pemeliharaan rutin dan peningkatan kinerja server. Mohon kembali beberapa saat lagi. Terima kasih atas kesabaran Anda!
+        </p>
+        <button class="btn" onclick="closeModal()">Kembali ke Beranda</button>
       </div>
 
     </div>
@@ -867,9 +866,11 @@
         const selectStep = document.getElementById('modalSelectStep');
         const passwordStep = document.getElementById('modalPasswordStep');
         const successStep = document.getElementById('modalSuccessStep');
+        const maintenanceStep = document.getElementById('modalMaintenanceStep');
 
         selectStep.style.display = 'none';
         passwordStep.style.display = 'none';
+        maintenanceStep.style.display = 'none';
         successStep.style.display = 'block';
 
         document.getElementById('successTitleText').innerText = "🎉 Easter Egg Perangkat Ini Ditemukan!";
@@ -1094,6 +1095,9 @@
     // ROUTING SYSTEM
     // ==========================================
     function navigateTo(path) {
+      if (path === '/kompres-file') {
+        path = '/kompres-file/error';
+      }
       history.pushState(null, '', path);
       renderPage(path);
     }
@@ -1107,15 +1111,23 @@
       const selectStep = document.getElementById('modalSelectStep');
       const passwordStep = document.getElementById('modalPasswordStep');
       const successStep = document.getElementById('modalSuccessStep');
+      const maintenanceStep = document.getElementById('modalMaintenanceStep');
 
       document.querySelectorAll('.tool-view').forEach(view => view.style.display = 'none');
 
       selectStep.style.display = 'none';
       passwordStep.style.display = 'none';
       successStep.style.display = 'none';
+      maintenanceStep.style.display = 'none';
       modal.style.display = 'none';
 
-      if (path === '/kompres-file') {
+      if (path === '/kompres-file/error') {
+        hero.style.display = 'block';
+        grid.style.display = 'grid';
+        workspace.style.display = 'none';
+        modal.style.display = 'flex';
+        maintenanceStep.style.display = 'block';
+      } else if (path === '/kompres-file') {
         hero.style.display = 'none';
         grid.style.display = 'none';
         workspace.style.display = 'block';
